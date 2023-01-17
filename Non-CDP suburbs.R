@@ -1,7 +1,7 @@
 #Non census-designated place suburbs
 #Choices include the consolidated metropolitan statistical areas and census designated places
 #The code retains tracts that interact with the CMSA boundary as we are interested in peripheral processes
-#Tracts that intersect with the CDP as we are less interested in inner-urban processes
+#Tracts that intersect with the CDP are removed as we are less interested in inner-urban processes
 
 #This definition is inspired by Hall and Lee's (2010) paper which disaggregates the CMSA by CDP
 
