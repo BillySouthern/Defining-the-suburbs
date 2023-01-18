@@ -1,7 +1,7 @@
 #Non census-designated place suburbs
-#Choices include the consolidated metropolitan statistical areas and census designated places
-#The code retains tracts that interact with the CMSA boundary as we are interested in peripheral processes
-#Tracts that intersect with the CDP are removed as we are less interested in inner-urban processes
+#Choices focuses on the core based statistical area and the census designated place
+#The code retains tracts that interact with the metropolitan statistical area boundary as we are interested in peripheral processes
+#Tracts that intersect with the census designated place are removed as we are less interested in inner-urban processes
 
 #This definition is inspired by Hall and Lee's (2010) paper which disaggregates the CMSA by CDP
 
@@ -20,7 +20,7 @@ Pittsburgh_tracts_2011 <- map_dfr(c("PA", "OH", "WV"), ~{
 })
 
 #Pittsburgh CBSA 2011
-Pittsburgh_metro_2011 <- combined_statistical_areas(resolution = "500k", year = 2011) %>%
+Pittsburgh_metro_2011 <- core_based_statistical_areas(resolution = "500k", year = 2011) %>%
   filter(str_detect(NAME, "Pittsburgh")) 
 
 #Pittsburgh Census Designated Place 2011
@@ -60,7 +60,7 @@ Pittsburgh_tracts_2021 <- map_dfr(c("PA", "OH", "WV"), ~{
 })
 
 #Pittsburgh CBSA 2021
-Pittsburgh_metro_2021 <- combined_statistical_areas(cb = TRUE, resolution = "500k") %>%
+Pittsburgh_metro_2021 <- core_based_statistical_areas(cb = TRUE, resolution = "500k") %>%
   filter(str_detect(NAME, "Pittsburgh")) 
 
 #Pittsburgh Census Designated Place 2021
