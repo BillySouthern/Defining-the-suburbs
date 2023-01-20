@@ -14,3 +14,4 @@ References
 Hall, M., & Lee, B. (2010). How Diverse Are US Suburbs? Urban Studies, 47(1), 3–28. https://doi.org/10.1177/0042098009346862
 
 Walker, K. (2022). Analyzing US Census Data: Methods, Maps, and Models in R (1st ed.). CRC Press.
+ 
