@@ -8,7 +8,9 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - litreview.qmd
+      - methods.qmd
+      - findings.qmd
 
 format:
   html:
