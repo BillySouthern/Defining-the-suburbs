@@ -6,7 +6,7 @@ website:
   title: "Results"
   navbar:
     left:
-      - href: index.qmd
+      - href: homepage.qmd
         text: Home
       - litreview.qmd
       - methods.qmd
