@@ -8,11 +8,8 @@ website:
     left:
       - href: homepage.qmd
         text: Home
-      - href: about.qmd
-        text: Methods
-      - href: methods.qmd
-        text: Results
-      - href: findings.qmd
+      - href: litreview.qmd
+        text: Diversity in the suburbs
 
 format:
   html:

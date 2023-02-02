@@ -1,4 +1,0 @@
----
-title: "Methods and data"
-editor: visual
----
