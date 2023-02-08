@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Suburban Delineations: Alternative ways to think about the suburban environment",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2\n\n\nIs this the homepage?"
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2\n\n\nthe homepage"
   },
   {
     "objectID": "about.html",
@@ -39,7 +39,7 @@
     "href": "results.html",
     "title": "Results",
     "section": "",
-    "text": "a test\n\n1+1\n\n[1] 2"
+    "text": "a test on the results page\n\n1+1\n\n[1] 2"
   },
   {
     "objectID": "methods.html",

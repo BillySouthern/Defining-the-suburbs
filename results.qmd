@@ -4,7 +4,7 @@ format: html
 editor: visual
 ---
 
-a test
+a test on the results page
 
 ```{r}
 1+1
