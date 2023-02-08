@@ -1,5 +1,5 @@
 ---
-title: "SuburbanDelineations"
+title: "Suburban Delineations"
 ---
 
 This is a Quarto website.

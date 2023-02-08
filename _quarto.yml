@@ -3,12 +3,12 @@ project:
   output-dir: docs
 
 website:
-  title: "SuburbanDelineations"
+  title: "Suburban Delineations: Alternative ways to think about the suburban environment "
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - LitReview.qmd
 
 format:
   html:
