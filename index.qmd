@@ -1,14 +1,20 @@
 ---
-title: "Suburban Delineations: Alternative ways to think about the suburban environment"
+title: "Suburban delineations: Alternative ways to think about the suburban form"
+image: ForestLakes.JPG
+about:
+  template: jolla
+  image-shape: round
+  image-width: 15em
+  links: 
+  - text: Data repository
+    icon: github
+    href: https://github.com/BillySouthern/Defining-the-suburbs
+  - text: Email the author
+    icon: envelope
+    href: mailto:bms6724@psu.edu
+  - text: About the author
+    icon: person-circle
+    href: https://billysouthern.blogspot.com
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-1 + 1
-```
-
-
-The homepage of the project  
+This is a website about how scholar have grappled with defining the suburban landscape. 

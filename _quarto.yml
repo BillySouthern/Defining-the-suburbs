@@ -14,7 +14,7 @@ website:
       - references.qmd
 format:
   html:
-    theme: United
+    theme: spacelab
     mainfont: arial
     fontsize: 1rem
     fontcolor: "#333333"

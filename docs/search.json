@@ -2,9 +2,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Suburban Delineations: Alternative ways to think about the suburban environment",
+    "title": "Suburban delineations: Alternative ways to think about the suburban form",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2\n\n\nThe homepage of the project"
+    "text": "This is a website about how scholar have grappled with defining the suburban landscape."
   },
   {
     "objectID": "about.html",
@@ -37,7 +37,7 @@
   {
     "objectID": "results.html",
     "href": "results.html",
-    "title": "Results",
+    "title": "Findings",
     "section": "",
     "text": "a test on the results page\n\n1+1\n\n[1] 2\n\n\nPage will be dedicated to the visualizations of the project"
   },
