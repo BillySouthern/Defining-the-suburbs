@@ -1,5 +1,5 @@
 ---
-title: "Suburban Delineations"
+title: "Suburban Delineations: Alternative ways to think about the suburban environment"
 ---
 
 This is a Quarto website.
@@ -9,3 +9,4 @@ To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 ```{r}
 1 + 1
 ```
+ Is this the homepage?

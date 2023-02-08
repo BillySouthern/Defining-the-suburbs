@@ -3,13 +3,13 @@ project:
   output-dir: docs
 
 website:
-  title: "Suburban Delineations: Alternative ways to think about the suburban environment "
+  title: "Defining the suburbs"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - LitReview.qmd
-
+      - literature.qmd
+      - methods.qmd
 format:
   html:
     theme: cosmo
