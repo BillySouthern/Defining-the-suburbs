@@ -1,0 +1,6 @@
+---
+title: "Case Studies"
+editor: visual
+---
+
+This chapter will detail the case study locations.
