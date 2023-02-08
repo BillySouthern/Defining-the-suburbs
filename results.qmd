@@ -5,3 +5,7 @@ editor: visual
 ---
 
 a test
+
+```{r}
+1+1
+```

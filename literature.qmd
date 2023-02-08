@@ -5,3 +5,7 @@ editor: visual
 ---
 
 Testing the new page
+
+```{r}
+3+3
+```
