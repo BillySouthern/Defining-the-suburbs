@@ -3,13 +3,12 @@ project:
   output-dir: docs
 
 website: 
-  title: "Results"
+  title: "Diversity in the suburbs"
   navbar:
     left:
       - href: homepage.qmd
         text: Home
-      - href: litreview.qmd
-        text: Diversity in the suburbs
+      - Testpage.qmd
 
 format:
   html:
