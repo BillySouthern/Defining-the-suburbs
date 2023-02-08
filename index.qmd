@@ -9,12 +9,12 @@ about:
   - text: Data repository
     icon: github
     href: https://github.com/BillySouthern/Defining-the-suburbs
-  - text: Email the author
-    icon: envelope
-    href: mailto:bms6724@psu.edu
   - text: About the author
     icon: person-circle
     href: https://billysouthern.blogspot.com
+  - text: Email the author
+    icon: envelope
+    href: mailto:bms6724@psu.edu
 ---
 
-This is a website about how scholar have grappled with defining the suburban landscape. 
+This is a website about how scholars have grappled with defining the boundaries of suburbia. 
