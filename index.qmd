@@ -9,5 +9,6 @@ To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 ```{r}
 1 + 1
 ```
-the homepage 
- 
+
+
+The homepage of the project  

@@ -11,6 +11,7 @@ website:
       - literature.qmd
       - methods.qmd
       - results.qmd
+      - references.qmd
 format:
   html:
     theme: cosmo

@@ -1,0 +1,7 @@
+---
+title: "Bibliography"
+format: html
+editor: visual
+---
+
+The bibliography and references page

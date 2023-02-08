@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Suburban Delineations: Alternative ways to think about the suburban environment",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2\n\n\nthe homepage"
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2\n\n\nThe homepage of the project"
   },
   {
     "objectID": "about.html",
@@ -32,20 +32,27 @@
     "href": "literature.html",
     "title": "Literature Review",
     "section": "",
-    "text": "Testing the new page\n\n3+3\n\n[1] 6"
+    "text": "Testing the new page\n\n3+3\n\n[1] 6\n\n\nIntroducing the theory and the conceptual framework, including the literature and the objectives of the study"
   },
   {
     "objectID": "results.html",
     "href": "results.html",
     "title": "Results",
     "section": "",
-    "text": "a test on the results page\n\n1+1\n\n[1] 2"
+    "text": "a test on the results page\n\n1+1\n\n[1] 2\n\n\nPage will be dedicated to the visualizations of the project"
   },
   {
     "objectID": "methods.html",
     "href": "methods.html",
     "title": "Data and Methods",
     "section": "",
-    "text": "testing here too\n\n2+2\n\n[1] 4"
+    "text": "testing here too\nSpace is for the methods (mostly descriptive) and more detail on the datasets in focus"
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "Bibliography",
+    "section": "",
+    "text": "The bibliography and references page"
   }
 ]
