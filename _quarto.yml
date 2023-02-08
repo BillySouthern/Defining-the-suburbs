@@ -14,7 +14,12 @@ website:
       - references.qmd
 format:
   html:
-    theme: cosmo
+    theme: United
+    mainfont: arial
+    fontsize: 1rem
+    fontcolor: "#333333"
+    linkcolor: "#809fff"
+    monofont: courier new
     css: styles.css
     toc: true
 
