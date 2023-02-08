@@ -32,6 +32,20 @@
     "href": "literature.html",
     "title": "Literature Review",
     "section": "",
-    "text": "Testing the new page"
+    "text": "Testing the new page\n\n3+3\n\n[1] 6"
+  },
+  {
+    "objectID": "results.html",
+    "href": "results.html",
+    "title": "Results",
+    "section": "",
+    "text": "a test\n\n1+1\n\n[1] 2"
+  },
+  {
+    "objectID": "methods.html",
+    "href": "methods.html",
+    "title": "Data and Methods",
+    "section": "",
+    "text": "testing here too\n\n2+2\n\n[1] 4"
   }
 ]
