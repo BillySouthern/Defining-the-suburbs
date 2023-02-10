@@ -13,6 +13,7 @@ website:
       - locations.qmd
       - results.qmd
       - references.qmd
+      
 format:
   html:
     theme: spacelab
