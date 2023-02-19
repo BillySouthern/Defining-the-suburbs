@@ -12,6 +12,7 @@ website:
       - methods.qmd
       - locations.qmd
       - results.qmd
+      - Portland.qmd
       - references.qmd
       
 format:

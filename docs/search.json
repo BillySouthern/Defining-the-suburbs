@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Suburban delineations: Alternative ways to think about the suburban form",
     "section": "",
-    "text": "This is a website about how scholars have grappled with defining the boundaries of suburbia."
+    "text": "The suburb exists as a critical landscape in social science research but there remains little consensus in how this space is defined. This website introduces several ways of defining the suburban, with an analysis of how these spaces have changed in their spatial extent and demographic composition in recent years."
   },
   {
     "objectID": "about.html",
@@ -37,9 +37,9 @@
   {
     "objectID": "results.html",
     "href": "results.html",
-    "title": "Findings",
+    "title": "Pittsburgh",
     "section": "",
-    "text": "a test on the results page\n\n1+1\n\n[1] 2\n\n\nPage will be dedicated to the visualizations of the project"
+    "text": "a test on the results page\n\n1+1\n\n[1] 2\n\n\nPage will be dedicated to the visualizations of the project."
   },
   {
     "objectID": "methods.html",
@@ -58,8 +58,15 @@
   {
     "objectID": "locations.html",
     "href": "locations.html",
-    "title": "Case studies",
+    "title": "Charlotte",
     "section": "",
     "text": "This chapter will detail the case study locations."
+  },
+  {
+    "objectID": "Portland.html",
+    "href": "Portland.html",
+    "title": "Portland",
+    "section": "",
+    "text": "The final case study"
   }
 ]
