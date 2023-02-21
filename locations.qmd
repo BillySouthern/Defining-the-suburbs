@@ -3,4 +3,6 @@ title: "Charlotte"
 editor: visual
 ---
 
-This chapter will detail the case study locations.
+::: column-margin
+![ Charlotte, NC](Images/CharlotteAoS.png){alt="A full screen image"}
+:::

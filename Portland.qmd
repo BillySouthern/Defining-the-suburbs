@@ -3,4 +3,10 @@ title: "Portland"
 editor: visual
 ---
 
-The final case study
+::: column-margin
+<div>
+
+![Portland, OR](Images/PortlandAoS.png){style="blue" fig-align="right"}
+
+</div>
+:::

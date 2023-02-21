@@ -4,10 +4,6 @@ format: html
 editor: visual
 ---
 
-a test on the results page
-
-```{r}
-1+1
-```
-
-Page will be dedicated to the visualizations of the project.
+::: column-margin
+![Pittsburgh, PA](Images/PittsburghAoS.png)
+:::
