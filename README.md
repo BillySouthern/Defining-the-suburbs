@@ -7,6 +7,8 @@ While the suburb exists without a specific and uniform definition, it is possibl
 
 Three types of suburb are included with all focusing on a specific angle of the suburb: Firstly, the 'non-census designated place' suburb is based on Hall and Lee's (2010) paper which looks at diversity across the suburbs. This methods situates the metropolitan statistical areas before removing the census designated place and assigning a suburban classification to remaining tracts. The code details the example of Pittsburgh, PA for 2011 and 2021.
 
+https://billysouthern.github.io/defining-the-suburbs/
+
 More to follow.
 
 References
