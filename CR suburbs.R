@@ -65,7 +65,7 @@ CBSA_2011 <- core_based_statistical_areas(resolution = "500k", year = 2011) %>%
 #Spatial filter of tracts for the city of interest
 HousingData_2011 <- HousingData_2011[CBSA_2011, ]
 
-#Acquiring the central city tracts
+#Acquiring the central city geographies
 CentralCities_2011 <- places(state = ST, year = YR) %>%
   filter(str_detect(NAMELSAD, CENTRAL_CITY)) 
 
@@ -174,7 +174,7 @@ CBSA_2021 <- core_based_statistical_areas(resolution = "500k", year = 2021) %>%
 #Spatial filter of tracts for the city of interest
 HousingData_2021 <- HousingData_2021[CBSA_2021, ]
 
-#Acquiring the central city tracts
+#Acquiring the central city geographies
 CentralCities_2021 <- places(state = ST, year = YR) %>%
   filter(str_detect(NAMELSAD, CENTRAL_CITY)) 
 
