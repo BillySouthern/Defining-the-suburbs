@@ -1,7 +1,7 @@
 #1/22, initiated by BS
 #Goal:  To isolate suburban tracts and highlight whether they are "inner" or "outer" suburbs
 
-#Post-Civil Rights suburbs (Pfeiffer, 2016)
+#Inner suburbs (Hanlon, 2008)
 
 #Libraries
 library(tigris)
@@ -147,4 +147,6 @@ ggsave("Portland-IO-2021.png",
 
 #To save
 #save(InnerOuter_Suburbs_2021,file = "~/OneDrive - The Pennsylvania State University/Suburban typologies Paper/InnerOuter_2021.Rdata")
+
+
 
