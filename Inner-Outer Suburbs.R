@@ -85,6 +85,8 @@ save(InnerOuter_Suburbs_2011,file = "~/OneDrive - The Pennsylvania State Univers
 
 
 #2021
+YR = 2021
+
 #Download geographies of interest (in this case, the CBSA)
 CBSA_2021 <- core_based_statistical_areas(resolution = "500k", year = 2021) %>%
   filter(str_detect(NAME, CBSA))
@@ -147,6 +149,7 @@ ggsave("Portland-IO-2021.png",
 
 #To save
 #save(InnerOuter_Suburbs_2021,file = "~/OneDrive - The Pennsylvania State University/Suburban typologies Paper/InnerOuter_2021.Rdata")
+
 
 
 
