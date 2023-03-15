@@ -93,17 +93,6 @@ PostCR_suburbs_2011 <- HousingData_2011 %>%
 #save(PostCR_suburbs_2011,file = "~/OneDrive - The Pennsylvania State University/Suburban typologies Paper/Post-CR suburbs/PostCRsuburbs_2011.Rdata")
 
 
-
-#Need to filter out ones we don't want
-#Then remove central city from each space (first name of each place)
-
-ggplot() + 
-  geom_sf(data = HousingData_2011[HousingData_2011$State == c("North Carolina", "South Carolina"), ], aes(fill = PostCRsuburb)) + 
-  geom_sf(data = CentralCities_2011[CentralCities_2011$NAME == "Charlotte", ], fill = NA, color = "blue") + 
-  geom_sf(data = Pittsburgh_metro_2011, fill = NA, color = "red") + 
-  theme_void()
-  
-
 #For genereal visualization of Charlotte, NC
 ggplot() + 
   geom_sf(data = PostCR_suburbs_2011[PostCR_suburbs_2011$State == c("North Carolina", "South Carolina"), ], 
@@ -208,12 +197,12 @@ ggplot() +
           aes(fill = PostCRsuburb), linewidth = 0.1, color = "white") + 
   theme_void() +
   scale_fill_manual(values=c("#BFBFBF", "#1A1A1A"), 
-                     labels=c("Pre-Civil Rights", "Post-Civil Rights"),
+                     labels=c("Pre-Civil Rights\nSuburbs", "Post-Civil Rights\nSuburbs"),
                     na.translate = F) +
   theme(legend.title=element_blank(),
         legend.position=c("bottom"),
         legend.key = element_rect(colour = NA, fill = NA)) + 
-  guides(color = guide_legend(title.position = "top", 
+  guides(fill = guide_legend(title.position = "top", 
                               title.hjust = 0.5,
                               label.position = "bottom",
                               override.aes = list(size=1)))

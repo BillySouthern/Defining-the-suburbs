@@ -57,16 +57,18 @@ InnerOuter_Suburbs_2011 <- erase_water(InnerOuter_Suburbs)
 
 #To visualize Portland (OR and WA)
 ggplot() + 
-  geom_sf(data = InnerOuter_Suburbs_2011[InnerOuter_Suburbs_2011$STATEFP == 41, ], aes(fill = Suburb)) + 
-  geom_sf(data = InnerOuter_Suburbs_2011[InnerOuter_Suburbs_2011$STATEFP == 53, ], aes(fill = Suburb)) + 
+  geom_sf(data = InnerOuter_Suburbs_2011[InnerOuter_Suburbs_2011$STATEFP == 41, ], aes(fill = Suburb),
+          linewidth = 0.1, color = "white") + 
+  geom_sf(data = InnerOuter_Suburbs_2011[InnerOuter_Suburbs_2011$STATEFP == 53, ], aes(fill = Suburb),
+          linewidth = 0.1, color = "white") + 
   theme_void() +
   scale_fill_manual(values=c("#1A1A1A", "#BFBFBF"), 
-                    labels=c("Inner Suburbs", "Outer Suburbs"),
+                    labels=c("Inner\nSuburbs", "Outer\nSuburbs"),
                     na.translate = F) +
   theme(legend.title=element_blank(),
         legend.position=c("bottom"),
-        legend.key = element_rect(colour = NA, fill = NA)) + 
-  guides(color = guide_legend(title.position = "top", 
+        legend.key = element_rect(colour = NA, fill = NA))  + 
+  guides(fill = guide_legend(title.position = "top", 
                               title.hjust = 0.5,
                               label.position = "bottom",
                               override.aes = list(size=1)))
@@ -125,16 +127,18 @@ InnerOuter_Suburbs_2021 <- erase_water(InnerOuter_Suburbs)
 
 #To visualize Portland (OR and WA)
 ggplot() + 
-  geom_sf(data = InnerOuter_Suburbs_2021[InnerOuter_Suburbs_2021$STATEFP == 41, ], aes(fill = Suburb)) + 
-  geom_sf(data = InnerOuter_Suburbs_2021[InnerOuter_Suburbs_2021$STATEFP == 53, ], aes(fill = Suburb)) + 
+  geom_sf(data = InnerOuter_Suburbs_2021[InnerOuter_Suburbs_2021$STATEFP == 41, ], aes(fill = Suburb),
+          linewidth = 0.1, color = "white") + 
+  geom_sf(data = InnerOuter_Suburbs_2021[InnerOuter_Suburbs_2021$STATEFP == 53, ], aes(fill = Suburb),
+          linewidth = 0.1, color = "white") + 
   theme_void() +
   scale_fill_manual(values=c("#1A1A1A", "#BFBFBF"), 
-                    labels=c("Inner Suburbs", "Outer Suburbs"),
+                    labels=c("Inner\nSuburbs", "Outer\nSuburbs"),
                     na.translate = F) +
   theme(legend.title=element_blank(),
         legend.position=c("bottom"),
         legend.key = element_rect(colour = NA, fill = NA)) + 
-  guides(color = guide_legend(title.position = "top", 
+  guides(fill = guide_legend(title.position = "top", 
                               title.hjust = 0.5,
                               label.position = "bottom",
                               override.aes = list(size=1)))
