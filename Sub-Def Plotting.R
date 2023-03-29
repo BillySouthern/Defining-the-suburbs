@@ -3,70 +3,75 @@
 
 #Libraries
 require(tidyverse)
+require(RColorBrewer)
+
 
 #Bar chart differences
 load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Output Data/TotalPopulation.Rdata")
 
-UrbvsSuburb <- PhillyVoterChange %>%
-  group_by(Environment) %>%
-  st_drop_geometry() %>%
-  summarise(Dem_17 = sum(Democratic_17),
-            Dem_21 = sum(Democratic_21),
-            Repub_17 = sum(Republican_17),
-            Repub_21 = sum(Republican_21)) %>%
-  filter(! (Environment == "Rural" | Environment == "")) %>%
-  mutate(Dem_Change = (Dem_21/Dem_17)-1) %>%
-  mutate(Repub_Change = (Repub_21/Repub_17)-1)
+#Prepping the data
+Pop_Totals <- Total_Population %>%
+  pivot_longer(
+    cols = c(Type, PostCRsuburb, Suburb),
+    values_to = "Type"
+  ) %>%
+  select(!name) %>%
+  drop_na(Type) %>%
+  group_by(City, Type) %>%
+  summarise(Total_2011 = sum(Total_2011, na.rm = T),
+            Total_2021 = sum(Total_2021, na.rm = T)) %>%
+  mutate(PercentChange = (Total_2021/Total_2011)-1) %>%
+  pivot_longer(
+    cols = c(Total_2011, Total_2021),
+    values_to = "Estimate"
+  ) %>%
+  rename(Year = "name") %>%
+  mutate(Year = str_sub(Year, 7, -1)) %>%
+  mutate(Suburb = case_when(Type == "Yes" ~ "Post-Civil Rights",
+                            Type == "No" ~ "Pre-Civil Rights",
+                            Type == "Inner" ~ "Inner",
+                            Type == "Outer" ~ "Outer",
+                            Type == "NCDP" ~ "Non-CDP")) %>%
+  mutate(Definition = case_when(Type == "Yes" ~ "Age",
+                                Type == "No" ~ "Age",
+                                Type == "Inner" ~ "Distance",
+                                Type == "Outer" ~ "Distance",
+                                Type == "NCDP" ~ "Census Designated")) 
 
-UrbvsSuburbpercent <- UrbvsSuburb %>%
-  select(Environment, Dem_Change, Repub_Change) %>%
-  rename(Dem_21 = Dem_Change,
-         Rep_21 = Repub_Change) %>%
-  pivot_longer(!Environment) %>%
-  rename(Change = name,
-         Percent = value) %>%
-  mutate(observation = 1:n()) %>%
-  mutate(observation = observation*2)
-
-UrbvsSuburb <- UrbvsSuburb %>%
-  select(Environment, Dem_17, Dem_21, Repub_17, Repub_21) %>%
-  pivot_longer(!Environment) %>%
-  rename(Group = name,
-         Total = value)%>%
-  mutate(observation = 1:n())
-
-UrbvsSuburb <- merge(UrbvsSuburb, UrbvsSuburbpercent, by = c("Environment", "observation"), all.x = T) %>%
-  select(-observation, -Change)%>%
-  unite("Object", Environment:Group, remove = FALSE) %>%
-  separate(Group, into = c("Party", "Year"), sep="_") %>%
-  unite("Dodge", Environment:Party, remove = FALSE) 
+Pop_Totals$PercentChange[duplicated(Pop_Totals$PercentChange)] <- NA
 
 
-rm(UrbvsSuburbpercent)
 
-ggplot(UrbvsSuburb, aes(y = Dodge, x = Total, fill=Party, alpha = Year)) + 
-  geom_col(width = 0.7, position = "dodge") +
-  facet_grid(rows = vars(Environment), scales = "free") +
-  geom_text(aes(x = Total, y = Dodge, label = scales::percent(Percent)), 
-            hjust = -0.1, size = 4, color = "black", fontface = "bold",
+
+
+ggplot(Pop_Totals[Pop_Totals$City == "Pittsburgh", ], 
+       aes(y = Suburb, x = Estimate, alpha = Year, fill = Definition)) + 
+  geom_col(width = 0.7, position = "dodge", show.legend=FALSE) +
+  geom_text(aes(x = Estimate, y = Suburb, label = scales::percent(PercentChange)), 
+            hjust = -0.5, vjust = 1.4, size = 4, color = "black", fontface = "bold", alpha = 1,
             inherit.aes = TRUE, na.rm = T) +
   theme_minimal(base_size = 12.5) + 
   theme(legend.key.size = unit(1, "cm"),
         legend.position = "top",
         strip.text = element_text(
           size = 16, color = "black", face = "bold"),
-        plot.title = 
-          element_text(hjust = 0.5)) +
-  labs(title = "Party registration change across the urban and suburban", 
-       x = "", 
-       y = "") +
-  scale_x_continuous(labels = ~ number_format(scale = .000001, 
-                                              suffix = " million")(abs(.x)),
+        strip.placement = "outside",
+        plot.title = element_text(hjust = 0.5, size = 22),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank()) +
+  labs(title = "Pittsburgh") +
+  scale_x_continuous(labels = scales::comma,
                      expand = c(0, 150000)) +
-  scale_y_discrete(labels=c('Democratic\n2017-2021', 'Republican\n2017-2021')) +
+  scale_fill_brewer(palette = "Dark2") +
   scale_alpha_discrete(range = c(0.45, 1), 
                        guide = "none") +
-  scale_fill_manual(name = "", values = c("#377eb8","#e41a1c"),
-                    labels = c("Democratic", "Republican")) +
   guides(fill = guide_legend(byrow = F,
-                             label.position = "top")) 
+                             label.position = "top")) +
+  facet_grid(rows = vars(Definition), scales = "free", switch = "y") 
+  
+ggsave("PittsburghTotPop.png",
+       path = "~/desktop",
+       width = 11,
+       height = 7,
+       units = "in",
+       dpi = 500)

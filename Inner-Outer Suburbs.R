@@ -54,15 +54,6 @@ InnerOuter_Suburbs <- rbind(Inner_Suburbs, Outer_Suburbs)
 #Erase water bodies, rivers, lakes
 InnerOuter_Suburbs_2011 <- erase_water(InnerOuter_Suburbs)
 
-#Joining City name
-CityNames <- CentralCities_2011 %>%
-  select(STATEFP, NAME) %>%
-  st_set_geometry(NULL)
-
-InnerOuter_Suburbs_2011 <- InnerOuter_Suburbs_2011 %>% 
-  left_join(CityNames, by="STATEFP") %>%
-  select(GEOID, Suburb, NAME.y) %>%
-  rename(City = NAME.y)
 
 #To visualize Portland (OR and WA)
 ggplot() + 
@@ -133,15 +124,6 @@ InnerOuter_Suburbs <- rbind(Inner_Suburbs, Outer_Suburbs)
 #Erase water bodies, rivers, lakes
 InnerOuter_Suburbs_2021 <- erase_water(InnerOuter_Suburbs)
 
-#Joining City name
-CityNames <- CentralCities_2021 %>%
-  select(STATEFP, NAME) %>%
-  st_set_geometry(NULL)
-
-InnerOuter_Suburbs_2021 <- InnerOuter_Suburbs_2021 %>% 
-  left_join(CityNames, by="STATEFP") %>%
-  select(GEOID, Suburb, NAME.y) %>%
-  rename(City = NAME.y)
 
 #To visualize Portland (OR and WA)
 ggplot() + 
@@ -170,7 +152,7 @@ ggsave("Portland-IO-2021.png",
        dpi = 500)
 
 #To save
-#save(InnerOuter_Suburbs_2021,file = "~/OneDrive - The Pennsylvania State University/Suburban typologies Paper/InnerOuter_2021.Rdata")
+save(InnerOuter_Suburbs_2021,file = "~/OneDrive - The Pennsylvania State University/Suburban typologies Paper/InnerOuter_2021.Rdata")
 
 
 
