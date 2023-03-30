@@ -48,7 +48,7 @@ ggplot(Pop_Totals[Pop_Totals$City == "Pittsburgh", ],
        aes(y = Suburb, x = Estimate, alpha = Year, fill = Definition)) + 
   geom_col(width = 0.7, position = "dodge", show.legend=FALSE) +
   geom_text(aes(x = Estimate, y = Suburb, label = scales::percent(PercentChange)), 
-            hjust = -0.5, vjust = 1.4, size = 4, color = "black", fontface = "bold", alpha = 1,
+            hjust = -0.15, vjust = 1.4, size = 4, color = "black", fontface = "bold", alpha = 1,
             inherit.aes = TRUE, na.rm = T) +
   theme_minimal(base_size = 12.5) + 
   theme(legend.key.size = unit(1, "cm"),
@@ -71,7 +71,7 @@ ggplot(Pop_Totals[Pop_Totals$City == "Pittsburgh", ],
   
 ggsave("PittsburghTotPop.png",
        path = "~/desktop",
-       width = 11,
+       width = 11.5,
        height = 7,
        units = "in",
        dpi = 500)
