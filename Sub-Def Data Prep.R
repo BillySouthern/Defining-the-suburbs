@@ -309,7 +309,7 @@ Total_Race <- Total_Race %>%
          Suburb = coalesce(Suburb.x, Suburb.y)) %>%
   select(GEOID, City, Type, PostCRSuburb, Suburb, NHWhite_11, NHWhite_21,
          NHBlack_11, NHBlack_21, Hispanic_11, Hispanic_21, Asian_11, Asian_21,
-         SG_11)
+         SG_11, SG_21)
 
-save(Total_Race,file = "~/OneDrive - The Pennsylvania State University/Suburban typologies Paper/TotalRace.Rdata")
+#save(Total_Race,file = "~/OneDrive - The Pennsylvania State University/Suburban typologies Paper/TotalRace.Rdata")
 

@@ -75,3 +75,38 @@ ggsave("CharlotteTotPop.png",
        height = 7,
        units = "in",
        dpi = 500)
+
+
+--------
+#Change in race
+  
+#Bar chart differences
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Output Data/TotalRace.Rdata")
+
+Race_Totals <- Total_Race %>%
+  pivot_longer(
+    cols = c(Type, PostCRSuburb, Suburb),
+    values_to = "Type"
+  ) %>%
+  select(!name) %>%
+  drop_na(Type) %>%
+  group_by(City, Type) %>% 
+  summarize_if(is.numeric,sum,na.rm = TRUE) %>%
+  mutate(WhiteChange = (NHWhite_21/NHWhite_11)-1,
+         BlackChange = (NHBlack_21/NHBlack_11)-1,
+         HispanicChange = (Hispanic_21/Hispanic_11)-1,
+         AsianChange = (Asian_21/Asian_11)-1,
+         SGChange = (SG_21/SG_11)-1) %>%
+  mutate(Suburb = case_when(Type == "Yes" ~ "Post-Civil Rights",
+                            Type == "No" ~ "Pre-Civil Rights",
+                            Type == "Inner" ~ "Inner",
+                            Type == "Outer" ~ "Outer",
+                            Type == "NCDP" ~ "Non-CDP")) %>%
+  mutate(Definition = case_when(Type == "Yes" ~ "Age",
+                                Type == "No" ~ "Age",
+                                Type == "Inner" ~ "Distance",
+                                Type == "Outer" ~ "Distance",
+                                Type == "NCDP" ~ "Census Designated")) %>%
+  select(City, Definition, Suburb, WhiteChange, BlackChange, HispanicChange, AsianChange, SGChange)
+
+write.csv(Race_Totals, "/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Output Data/RaceTotals.csv", row.names=T)
