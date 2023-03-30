@@ -12,7 +12,7 @@ load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/
 #Prepping the data
 Pop_Totals <- Total_Population %>%
   pivot_longer(
-    cols = c(Type, PostCRsuburb, Suburb),
+    cols = c(Type, PostCRSuburb, Suburb),
     values_to = "Type"
   ) %>%
   select(!name) %>%
@@ -36,19 +36,19 @@ Pop_Totals <- Total_Population %>%
                                 Type == "No" ~ "Age",
                                 Type == "Inner" ~ "Distance",
                                 Type == "Outer" ~ "Distance",
-                                Type == "NCDP" ~ "Census Designated")) 
-
-Pop_Totals$PercentChange[duplicated(Pop_Totals$PercentChange)] <- NA
-
+                                Type == "NCDP" ~ "Census Designated")) %>%
+  mutate(PercentChange=ifelse(row_number()%%2==1,NA,PercentChange))
 
 
 
 
-ggplot(Pop_Totals[Pop_Totals$City == "Pittsburgh", ], 
+
+
+ggplot(Pop_Totals[Pop_Totals$City == "Charlotte", ], 
        aes(y = Suburb, x = Estimate, alpha = Year, fill = Definition)) + 
   geom_col(width = 0.7, position = "dodge", show.legend=FALSE) +
   geom_text(aes(x = Estimate, y = Suburb, label = scales::percent(PercentChange)), 
-            hjust = -0.15, vjust = 1.4, size = 4, color = "black", fontface = "bold", alpha = 1,
+            hjust = -0.2, size = 4, color = "black", fontface = "bold", alpha = 1,
             inherit.aes = TRUE, na.rm = T) +
   theme_minimal(base_size = 12.5) + 
   theme(legend.key.size = unit(1, "cm"),
@@ -59,7 +59,7 @@ ggplot(Pop_Totals[Pop_Totals$City == "Pittsburgh", ],
         plot.title = element_text(hjust = 0.5, size = 22),
         axis.title.x=element_blank(),
         axis.title.y=element_blank()) +
-  labs(title = "Pittsburgh") +
+  labs(title = "Charlotte") +
   scale_x_continuous(labels = scales::comma,
                      expand = c(0, 150000)) +
   scale_fill_brewer(palette = "Dark2") +
@@ -69,9 +69,9 @@ ggplot(Pop_Totals[Pop_Totals$City == "Pittsburgh", ],
                              label.position = "top")) +
   facet_grid(rows = vars(Definition), scales = "free", switch = "y") 
   
-ggsave("PittsburghTotPop.png",
+ggsave("CharlotteTotPop.png",
        path = "~/desktop",
-       width = 11.5,
+       width = 12,
        height = 7,
        units = "in",
        dpi = 500)
