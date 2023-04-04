@@ -130,16 +130,53 @@ City_Income <- Median_Income %>%
     names_to = "Form", 
     values_to = "Estimate",
     values_drop_na = TRUE) %>%
-  mutate(Year = case_when(Form == "Min_11" ~ "2011",
-                          Form == "Min_21" ~ "2021",
-                          Form == "Median_11" ~ "2011",
-                          Form == "Median_21" ~ "2021",
-                          Form == "Max_11" ~ "2011",
-                          Form == "Max_21" ~ "2021")) 
+  separate(Form, into = c("Form", "Year"), remove = FALSE, extra = "merge") %>%
+  unite("Unique", Type:Form, remove = FALSE) %>%
+  mutate(Year = case_when(Year == 11 ~ 2011,
+                          Year == 21 ~ 2021)) %>%
+  mutate(Definition = case_when(Type == "Yes" ~ "Age",
+                                Type == "No" ~ "Age",
+                                Type == "Inner" ~ "Distance",
+                                Type == "Outer" ~ "Distance",
+                                Type == "NCDP" ~ "Census Designated"))
 
-#Split min max, then join on top of each other
 
-City_Income$Form = str_sub(City_Income$Form, end = -4)
+ggplot(data=City_Income[City_Income$City == "Portland", ], aes(x = Year, y = Estimate, group = Unique, color = Definition, alpha = Form)) +
+  geom_path(aes(group = Unique, linetype = Type, color = Definition, size = Definition), 
+            arrow = arrow(ends = "last", length = unit(0.15, "inches")), 
+            show.legend = FALSE) +
+  theme_minimal() +
+  scale_color_manual(values=c('Distance'='#8da0cb', 'Census Designated'='#fc8d62', "Age" = "#66c2a5")) +
+  scale_alpha_manual(name = "",
+                     values = c(0.4, 1, 0.4),
+                     guide = guide_legend(reverse = TRUE)) +
+  scale_size_manual(values = c('Distance'=1, 'Census Designated'= 1.5, "Age" = 1)) +
+  scale_linetype_manual(values = c('Inner' = "dashed",'NCDP' = "solid",'No' = "dashed", 
+                                  'Yes' = "solid", 'Outer' = "solid"),
+                        guide = guide_legend(reverse = TRUE)) +
+  scale_x_continuous(breaks=c(2011, 2021), limits = c(2010, 2022)) +
+  scale_y_continuous(labels=scales::dollar_format()) +
+  facet_grid(. ~ Definition, 
+             scales = "free_x") +
+  theme(strip.placement = "outside",
+        strip.text.x = element_text(size = 18, face = "bold"),
+        axis.text.x = element_text(size = 8),
+        plot.title = element_text(hjust = 0.5, size=22),
+        legend.position="bottom",
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        panel.grid.major.x = element_line(size = 0.65),
+        panel.grid.minor.x = element_line(size = 0.2),
+        panel.grid.major.y = element_line(size = 0.5),
+        panel.grid.minor.y = element_line(size = 0.2)) +
+  guides(alpha = guide_legend(override.aes = list(size = 3.5),
+                              label.position = "top")) +
+  labs(title = "Portland") 
 
-ggplot(data=City_Income[City_Income$City == "Pittsburgh", ], aes(x = Year, y = Estimate, group = Form, color = Type)) +
-  geom_line() + geom_point()
+
+ggsave("PortlandIncome.png",
+       path = "~/desktop",
+       width = 10,
+       height = 7,
+       units = "in",
+       dpi = 500)
