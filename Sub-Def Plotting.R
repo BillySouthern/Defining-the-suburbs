@@ -110,3 +110,36 @@ Race_Totals <- Total_Race %>%
   select(City, Definition, Suburb, WhiteChange, BlackChange, HispanicChange, AsianChange, SGChange)
 
 write.csv(Race_Totals, "/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Output Data/RaceTotals.csv", row.names=T)
+
+#Median income changes
+
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Output Data/MedianIncome.Rdata")
+
+City_Income <- Median_Income %>%
+  pivot_longer(
+    cols = c(Type, PostCRSuburb, Suburb),
+    values_to = "Type") %>% 
+  drop_na("Type") %>%
+  group_by(City, Type) %>% 
+  summarise(Max_11=max(Income_11, na.rm = TRUE), Min_11=min(Income_11, na.rm = TRUE), 
+            Median_11=median(Income_11, na.rm = TRUE),
+            Max_21=max(Income_21, na.rm = TRUE), Min_21=min(Income_21, na.rm = TRUE), 
+            Median_21=median(Income_21, na.rm = TRUE)) %>% 
+  pivot_longer(
+    cols = starts_with("M"), 
+    names_to = "Form", 
+    values_to = "Estimate",
+    values_drop_na = TRUE) %>%
+  mutate(Year = case_when(Form == "Min_11" ~ "2011",
+                          Form == "Min_21" ~ "2021",
+                          Form == "Median_11" ~ "2011",
+                          Form == "Median_21" ~ "2021",
+                          Form == "Max_11" ~ "2011",
+                          Form == "Max_21" ~ "2021")) 
+
+#Split min max, then join on top of each other
+
+City_Income$Form = str_sub(City_Income$Form, end = -4)
+
+ggplot(data=City_Income[City_Income$City == "Pittsburgh", ], aes(x = Year, y = Estimate, group = Form, color = Type)) +
+  geom_line() + geom_point()

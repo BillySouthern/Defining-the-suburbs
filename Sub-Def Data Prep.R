@@ -127,14 +127,120 @@ Total_Population <- Total_Population %>%
 #save(Total_Population,file = "~/OneDrive - The Pennsylvania State University/Suburban typologies Paper/TotalPopulation.Rdata")
 
 
+--------
+
 #2011 Median HH income
 Med_inc_11 <- get_acs(
   geography = GEOG, 
   variables = "B19019_001", 
   state = ST,
-  year = YR) %>%
-  rename(income_11 = estimate,
-         incomemoe_11 = moe)
+  year = YR1,
+  output = "wide") %>%
+  rename("estimate_11" = B19019_001E,
+         "moe_11" = B19019_001M)
+
+#2021 Median HH income
+Med_inc_21 <- get_acs(
+  geography = GEOG, 
+  variables = "B19019_001", 
+  state = ST,
+  year = YR2,
+  output = "wide") %>%
+  rename("estimate_21" = B19019_001E,
+         "moe_21" = B19019_001M)
+
+#NON-CENSUS DESIGNATED PLACE SUBURBS TOTAL POP
+#loading 2011 nonCDP tracts
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/NonCDP suburbs/nonCDP_suburbs_2011.Rdata")
+
+Income_11 <- merge(Med_inc_11, nonCDP_suburbs_2011, by.x = "GEOID", by.y = "GEOID") %>%
+  select(GEOID, estimate_11, moe_11, City)
+
+#loading 2021 nonCDP tracts
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/NonCDP suburbs/nonCDP_suburbs_2021.Rdata")
+
+#Join tracts to data
+Income_21 <- merge(Med_inc_21, nonCDP_suburbs_2021, by.x = "GEOID", by.y = "GEOID") %>%
+  select(GEOID, estimate_21, moe_21, City)
+
+#Join both years
+NCDP_Income <- merge(Income_11, Income_21, by.x = "GEOID", by.y = "GEOID", all = TRUE) %>%
+  mutate(Type = "NCDP")
+
+
+
+#POST-CR SUBURBS TOTAL POP
+#2011
+#load 2011 POST CR tracts
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Post-CR Suburbs/PostCRsuburbs_2011.Rdata")
+
+#Join tracts to data (and remove duplicate)
+Income_11 <- merge(Med_inc_11, PostCR_suburbs_2011, by.x = "GEOID", by.y = "GEOID") %>%
+  select(GEOID, estimate_11, moe_11, State, PostCRsuburb) %>%
+  distinct(GEOID, .keep_all = TRUE)
+
+#2021
+#Load 2021 POST CR tracts
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Post-CR Suburbs/PostCRsuburbs_2021.Rdata")
+
+#Join tracts to data (and remove duplicate)
+Income_21 <- merge(Med_inc_21, PostCR_suburbs_2021, by.x = "GEOID", by.y = "GEOID") %>%
+  select(GEOID, estimate_21, moe_21, State, PostCRsuburb) %>%
+  distinct(GEOID, .keep_all = TRUE)
+
+#Join both years
+PostCR_Income <- merge(Income_11, Income_21, by.x = "GEOID", by.y = "GEOID", all = TRUE)
+
+
+#INNER/OUTER Suburbs
+#2011
+#load 2011 INNER/OUTER tracts
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Inner-Outer/InnerOuter_2011.Rdata")
+
+#Join tracts to data (and remove duplicate)
+Income_11 <- merge(Med_inc_11, InnerOuter_Suburbs_2011, by.x = "GEOID", by.y = "GEOID") %>%
+  select(GEOID, estimate_11, moe_11, Suburb) 
+
+#2021
+#Load 2021 POST CR tracts
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Inner-Outer/InnerOuter_2021.Rdata")
+
+#Join tracts to data (and remove duplicate)
+Income_21 <- merge(Med_inc_21, InnerOuter_Suburbs_2021, by.x = "GEOID", by.y = "GEOID") %>%
+  select(GEOID, estimate_21, moe_21, Suburb) 
+
+#Join both years
+IO_Income <- merge(Income_11, Income_21, by.x = "GEOID", by.y = "GEOID", all = TRUE)
+
+#Combining all suburban populations into one object
+Median_Income <- merge(IO_Income, PostCR_Income, by.x = "GEOID", by.y = "GEOID", all = TRUE)
+Median_Income <- merge(Median_Income, NCDP_Income, by.x = "GEOID", by.y = "GEOID", all = TRUE) 
+
+#General tidying
+Median_Income <- Median_Income %>%
+  mutate(City = str_extract(GEOID, "^.{2}")) %>%
+  mutate(City = case_when(City == 37 ~ "Charlotte",
+                          City == 45 ~ "Charlotte",
+                          City == 42 ~ "Pittsburgh",
+                          City == 54 ~ "Pittsburgh",
+                          City == 39 ~ "Pittsburgh",
+                          City == 41 ~ "Portland",
+                          City == 53 ~ "Portland")) %>%
+  mutate(Income_11 = coalesce(estimate_11.x, estimate_11.y, estimate_11),
+         Income_21 = coalesce(estimate_21.x, estimate_21.y, estimate_21),
+         PostCRSuburb = coalesce(PostCRsuburb.x, PostCRsuburb.y),
+         Suburb = coalesce(Suburb.x, Suburb.y)) %>%
+  select(GEOID, City, Type, PostCRSuburb, Suburb, Income_11, Income_21)
+
+#save(Median_Income,file = "~/OneDrive - The Pennsylvania State University/Suburban typologies Paper/MedianIncome.Rdata")
+
+
+
+
+
+
+
+-------
 
 #2011 Foreign born
 NativeForeign_11 <- get_acs(
