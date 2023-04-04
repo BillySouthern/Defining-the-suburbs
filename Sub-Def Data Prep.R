@@ -248,9 +248,116 @@ NativeForeign_11 <- get_acs(
   variables = c("B05012_002E", "B05012_003E"), 
   state = ST,
   summary_var = "B05012_001",
-  year = YR) %>%
-  rename(citizen_11 = estimate,
-         citizenmoe_11 = moe)
+  year = YR1,
+  output = "wide") %>%
+  rename(Native_11 = B05012_002E,
+         Native_MOE = B05012_002M,
+         Foreign_11 = B05012_003E,
+         Foreign_MOE = B05012_003M) %>%
+  mutate(NativePercent_11 = Native_11/summary_est) %>%
+  mutate(ForeignPercent_11 = Foreign_11/summary_est) 
+  
+
+NativeForeign_21 <- get_acs(
+  geography = GEOG, 
+  variables = c("B05012_002E", "B05012_003E"), 
+  state = ST,
+  summary_var = "B05012_001",
+  year = YR2,
+  output = "wide") %>%
+  rename(Native_21 = B05012_002E,
+         Native_MOE = B05012_002M,
+         Foreign_21 = B05012_003E,
+         Foreign_MOE = B05012_003M) %>%
+  mutate(NativePercent_21 = Native_21/summary_est) %>%
+  mutate(ForeignPercent_21 = Foreign_21/summary_est) 
+
+#loading 2011 nonCDP tracts
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/NonCDP suburbs/nonCDP_suburbs_2011.Rdata")
+
+Born_11 <- merge(NativeForeign_11, nonCDP_suburbs_2011, by.x = "GEOID", by.y = "GEOID") %>%
+  select(GEOID, Native_11, Foreign_11, City)
+
+#loading 2021 nonCDP tracts
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/NonCDP suburbs/nonCDP_suburbs_2021.Rdata")
+
+#Join tracts to data
+Born_21 <- merge(NativeForeign_21, nonCDP_suburbs_2021, by.x = "GEOID", by.y = "GEOID") %>%
+  select(GEOID, Native_21, Foreign_21, City)
+
+#Join both years
+NCDP_Born <- merge(Born_11, Born_21, by.x = "GEOID", by.y = "GEOID", all = TRUE) %>%
+  mutate(Type = "NCDP")
+
+
+#2011
+#load 2011 POST CR tracts
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Post-CR Suburbs/PostCRsuburbs_2011.Rdata")
+
+#Join tracts to data (and remove duplicate)
+Born_11 <- merge(NativeForeign_11, PostCR_suburbs_2011, by.x = "GEOID", by.y = "GEOID") %>%
+  select(GEOID, Native_11, Foreign_11, State, PostCRsuburb) %>%
+  distinct(GEOID, .keep_all = TRUE)
+
+#2021
+#Load 2021 POST CR tracts
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Post-CR Suburbs/PostCRsuburbs_2021.Rdata")
+
+#Join tracts to data (and remove duplicate)
+Born_21 <- merge(NativeForeign_21, PostCR_suburbs_2021, by.x = "GEOID", by.y = "GEOID") %>%
+  select(GEOID, Native_21, Foreign_21, State, PostCRsuburb) %>%
+  distinct(GEOID, .keep_all = TRUE)
+
+#Join both years
+PostCR_Born <- merge(Born_11, Born_21, by.x = "GEOID", by.y = "GEOID", all = TRUE)
+
+
+
+#INNER/OUTER Suburbs
+#2011
+#load 2011 INNER/OUTER tracts
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Inner-Outer/InnerOuter_2011.Rdata")
+
+#Join tracts to data (and remove duplicate)
+Born_11 <- merge(NativeForeign_11, InnerOuter_Suburbs_2011, by.x = "GEOID", by.y = "GEOID") %>%
+  select(GEOID, Native_11, Foreign_11, Suburb) 
+
+#2021
+#Load 2021 POST CR tracts
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Inner-Outer/InnerOuter_2021.Rdata")
+
+#Join tracts to data (and remove duplicate)
+Born_21 <- merge(NativeForeign_21, InnerOuter_Suburbs_2021, by.x = "GEOID", by.y = "GEOID") %>%
+  select(GEOID, Native_21, Foreign_21, Suburb) 
+
+#Join both years
+IO_Born <- merge(Born_11, Born_21, by.x = "GEOID", by.y = "GEOID", all = TRUE)
+
+#Combining all suburban populations into one object
+Born <- merge(IO_Born, PostCR_Born, by.x = "GEOID", by.y = "GEOID", all = TRUE)
+Born <- merge(Born, NCDP_Born, by.x = "GEOID", by.y = "GEOID", all = TRUE) 
+
+#General tidying
+Born <- Born %>%
+  mutate(City = str_extract(GEOID, "^.{2}")) %>%
+  mutate(City = case_when(City == 37 ~ "Charlotte",
+                          City == 45 ~ "Charlotte",
+                          City == 42 ~ "Pittsburgh",
+                          City == 54 ~ "Pittsburgh",
+                          City == 39 ~ "Pittsburgh",
+                          City == 41 ~ "Portland",
+                          City == 53 ~ "Portland")) %>%
+  mutate(Native_11 = coalesce(Native_11.x, Native_11.y, Native_11),
+         Native_21 = coalesce(Native_21.x, Native_21.y, Native_21),
+         Foreign_11 = coalesce(Foreign_11.x, Foreign_11.y, Foreign_11),
+         Foreign_21 = coalesce(Foreign_21.x, Foreign_21.y, Foreign_21),
+         PostCRSuburb = coalesce(PostCRsuburb.x, PostCRsuburb.y),
+         Suburb = coalesce(Suburb.x, Suburb.y)) %>%
+  select(GEOID, City, Type, PostCRSuburb, Suburb, Native_11, Native_21, Foreign_11, Foreign_21)
+
+
+save(Born,file = "~/OneDrive - The Pennsylvania State University/Suburban typologies Paper/Born.rdata")
+
 
 ------------
 #2011 Race

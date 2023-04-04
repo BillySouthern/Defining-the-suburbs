@@ -180,3 +180,78 @@ ggsave("PortlandIncome.png",
        height = 7,
        units = "in",
        dpi = 500)
+
+
+#Foreign born identity chart
+
+load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Output Data/Born.Rdata")
+
+Born_Totals <- Born %>%
+  pivot_longer(
+    cols = c(Type, PostCRSuburb, Suburb),
+    values_to = "Type"
+  ) %>%
+  drop_na(Type) %>%
+  group_by(City, Type) %>% 
+  summarize_if(is.numeric,sum,na.rm = TRUE) %>%
+  pivot_longer(
+    cols = ends_with("1"), 
+    names_to = "Form", 
+    values_to = "Estimate",
+    values_drop_na = TRUE) %>%
+  separate(Form, into = c("Form", "Year"), remove = FALSE, extra = "merge") %>%
+  mutate(Year = case_when(Year == 11 ~ 2011,
+                          Year == 21 ~ 2021)) %>%
+  mutate(Definition = case_when(Type == "Yes" ~ "Age",
+                                Type == "No" ~ "Age",
+                                Type == "Inner" ~ "Distance",
+                                Type == "Outer" ~ "Distance",
+                                Type == "NCDP" ~ "Census Designated")) %>%
+  mutate(Name = case_when(Type == "Yes" ~ "Post CR",
+                                Type == "No" ~ "Pre CR",
+                                Type == "Inner" ~ "Inner",
+                                Type == "Outer" ~ "Outer",
+                                Type == "NCDP" ~ "Non-CDP")) %>%
+  mutate(Order = case_when(Type == "Yes" ~ "5",
+                          Type == "No" ~ "2",
+                          Type == "Inner" ~ "1",
+                          Type == "Outer" ~ "4",
+                          Type == "NCDP" ~ "3")) 
+
+
+library(scales)
+
+ggplot(Born_Totals[Born_Totals$City == "Charlotte", ], aes(x = reorder(Year, -Estimate), y = Estimate, fill = Definition, alpha = Form)) + 
+  geom_bar(position="fill", stat="identity", width=0.99) +
+  theme_minimal(base_size = 12.5) + 
+  facet_wrap( ~ Order, 
+             ncol = 3) +
+  coord_flip() +
+  labs(title = "Charlotte", 
+       x = "", 
+       y = "") +
+  scale_y_continuous(labels = percent,
+                     breaks=seq(0, 1, 0.25)) +
+  guides(fill=guide_legend(title=NULL)) +
+  theme(plot.title = element_text(hjust = 0.5, size=22),
+        legend.position="bottom",
+        strip.placement = "outside",
+        strip.text.x = element_text(size = 18, face = "bold"),
+        axis.text.x = element_text(size = 8),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        panel.grid.major.x = element_line(size = 0.65),
+        panel.grid.minor.x = element_line(size = 0.2),
+        panel.grid.major.y = element_line(size = 0),
+        panel.grid.minor.y = element_line(size = 0)) +
+  scale_fill_manual(values=c('Distance'='#8da0cb', 
+                             'Census Designated'='#fc8d62', 
+                             "Age" = "#66c2a5")) +
+  scale_alpha_manual(name = "",
+                     values = c(1, 0.6),
+                     guide = guide_legend(reverse = TRUE)) +
+  guides(fill = guide_legend(reverse = TRUE))
+
+
+
+
