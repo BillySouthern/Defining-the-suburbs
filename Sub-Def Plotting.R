@@ -4,7 +4,7 @@
 #Libraries
 require(tidyverse)
 require(RColorBrewer)
-
+require(scales)
 
 #Bar chart differences
 load("/Users/billy/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Suburban typologies Paper/Output Data/TotalPopulation.Rdata")
@@ -138,22 +138,38 @@ City_Income <- Median_Income %>%
                                 Type == "No" ~ "Age",
                                 Type == "Inner" ~ "Distance",
                                 Type == "Outer" ~ "Distance",
-                                Type == "NCDP" ~ "Census Designated"))
+                                Type == "NCDP" ~ "Census Designated")) %>%
+  mutate(Order = case_when(Type == "Yes" ~ "5",
+                           Type == "No" ~ "1",
+                           Type == "Inner" ~ "4",
+                           Type == "Outer" ~ "2",
+                           Type == "NCDP" ~ "3")) %>%
+  mutate(Order = case_when(Type == "Yes" ~ "4",
+                           Type == "No" ~ "1",
+                           Type == "Inner" ~ "2",
+                           Type == "Outer" ~ "5",
+                           Type == "NCDP" ~ "3")) 
 
 
-ggplot(data=City_Income[City_Income$City == "Portland", ], aes(x = Year, y = Estimate, group = Unique, color = Definition, alpha = Form)) +
-  geom_path(aes(group = Unique, linetype = Type, color = Definition, size = Definition), 
+ggplot(data=City_Income[City_Income$City == "Charlotte", ], aes(x = Year, y = Estimate, group = Unique, color = Definition, alpha = Form)) +
+  geom_path(aes(group = Unique, linetype = Order, color = Definition, size = Definition), 
             arrow = arrow(ends = "last", length = unit(0.15, "inches")), 
-            show.legend = FALSE) +
+            show.legend = F) +
   theme_minimal() +
-  scale_color_manual(values=c('Distance'='#8da0cb', 'Census Designated'='#fc8d62', "Age" = "#66c2a5")) +
+  scale_color_manual(values=c('Distance'='#8da0cb', 'Census Designated'='#fc8d62', "Age" = "#66c2a5"),
+                     guide = "none") +
   scale_alpha_manual(name = "",
                      values = c(0.4, 1, 0.4),
-                     guide = guide_legend(reverse = TRUE)) +
-  scale_size_manual(values = c('Distance'=1, 'Census Designated'= 1.5, "Age" = 1)) +
-  scale_linetype_manual(values = c('Inner' = "dashed",'NCDP' = "solid",'No' = "dashed", 
-                                  'Yes' = "solid", 'Outer' = "solid"),
-                        guide = guide_legend(reverse = TRUE)) +
+                     guide = "none") +
+  scale_size_manual(values = c('Distance'= 1.15, 'Census Designated'= 1.15, "Age" = 1.15),
+                    guide = "none") +
+  scale_linetype_manual(values = c('1' = "longdash",'3' = "solid",'4' = "longdash", 
+                                  '5' = "solid", '2' = "solid"),
+                        labels = c("Inner", "Outer", "Non-CDP", "Pre-Civil Rights", "Post-Civil Rights"),
+                        name = "",
+                        guide = guide_legend(override.aes = list(color = c("#66c2a5", "#66c2a5",
+                                                                 "#fc8d62", "#8da0cb", "#8da0cb")),
+                                             label.position = "bottom")) +
   scale_x_continuous(breaks=c(2011, 2021), limits = c(2010, 2022)) +
   scale_y_continuous(labels=scales::dollar_format()) +
   facet_grid(. ~ Definition, 
@@ -165,16 +181,15 @@ ggplot(data=City_Income[City_Income$City == "Portland", ], aes(x = Year, y = Est
         legend.position="bottom",
         axis.title.x=element_blank(),
         axis.title.y=element_blank(),
-        panel.grid.major.x = element_line(size = 0.65),
+        panel.grid.major.x = element_line(size = 0.65,
+                                          color = "grey"),
         panel.grid.minor.x = element_line(size = 0.2),
         panel.grid.major.y = element_line(size = 0.5),
         panel.grid.minor.y = element_line(size = 0.2)) +
-  guides(alpha = guide_legend(override.aes = list(size = 3.5),
-                              label.position = "top")) +
-  labs(title = "Portland") 
+  labs(title = "Charlotte") 
 
 
-ggsave("PortlandIncome.png",
+ggsave("Charlottencome.png",
        path = "~/desktop",
        width = 10,
        height = 7,
@@ -212,26 +227,32 @@ Born_Totals <- Born %>%
                                 Type == "Inner" ~ "Inner",
                                 Type == "Outer" ~ "Outer",
                                 Type == "NCDP" ~ "Non-CDP")) %>%
-  mutate(Order = case_when(Type == "Yes" ~ "5",
-                          Type == "No" ~ "2",
-                          Type == "Inner" ~ "1",
-                          Type == "Outer" ~ "4",
+  mutate(Order = case_when(Type == "Yes" ~ "4",
+                          Type == "No" ~ "1",
+                          Type == "Inner" ~ "2",
+                          Type == "Outer" ~ "5",
                           Type == "NCDP" ~ "3")) 
 
 
-library(scales)
+SuburbList <- c(
+  '1'="Age\nPre-Civil Rights",
+  '2'="Distance\nInner",
+  '3'="Census Designated\nNon-CDP",
+  '4'="Post-Civil Rights",
+  '5'="Outer")
 
-ggplot(Born_Totals[Born_Totals$City == "Charlotte", ], aes(x = reorder(Year, -Estimate), y = Estimate, fill = Definition, alpha = Form)) + 
-  geom_bar(position="fill", stat="identity", width=0.99) +
+ggplot(Born_Totals[Born_Totals$City == "Portland", ], aes(x = reorder(Year, -Estimate), y = Estimate, fill = Definition, alpha = Form)) + 
+  geom_bar(position="fill", stat="identity", width=0.99, ) +
   theme_minimal(base_size = 12.5) + 
   facet_wrap( ~ Order, 
-             ncol = 3) +
+             ncol = 3,
+             labeller = as_labeller(SuburbList)) +
   coord_flip() +
-  labs(title = "Charlotte", 
+  labs(title = "Portland", 
        x = "", 
        y = "") +
   scale_y_continuous(labels = percent,
-                     breaks=seq(0, 1, 0.25)) +
+                     breaks=seq(0, 1, 0.2)) +
   guides(fill=guide_legend(title=NULL)) +
   theme(plot.title = element_text(hjust = 0.5, size=22),
         legend.position="bottom",
@@ -240,18 +261,29 @@ ggplot(Born_Totals[Born_Totals$City == "Charlotte", ], aes(x = reorder(Year, -Es
         axis.text.x = element_text(size = 8),
         axis.title.x=element_blank(),
         axis.title.y=element_blank(),
-        panel.grid.major.x = element_line(size = 0.65),
-        panel.grid.minor.x = element_line(size = 0.2),
+        panel.grid.major.x = element_line(size = 0.5,
+                                          color = "grey"),
+        panel.grid.minor.x = element_line(size = 0.2,
+                                          color = "lightgrey"),
         panel.grid.major.y = element_line(size = 0),
         panel.grid.minor.y = element_line(size = 0)) +
   scale_fill_manual(values=c('Distance'='#8da0cb', 
                              'Census Designated'='#fc8d62', 
-                             "Age" = "#66c2a5")) +
+                             "Age" = "#66c2a5"),
+                    guide = 'none') +
   scale_alpha_manual(name = "",
-                     values = c(1, 0.6),
-                     guide = guide_legend(reverse = TRUE)) +
-  guides(fill = guide_legend(reverse = TRUE))
+                     values = c(1, 0.55),
+                     guide = guide_legend(override.aes = list(fill = "#fc8d62", "#fc8d62",
+                                                              label.position = "top"),
+                                          label.position = "bottom",
+                                          reverse = TRUE)) +
+  guides(fill = "none") 
 
 
-
+ggsave("PortlandBorn.png",
+       path = "~/desktop",
+       width = 10,
+       height = 7,
+       units = "in",
+       dpi = 500)
 
