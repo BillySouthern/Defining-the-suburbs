@@ -11,7 +11,7 @@ bibliography: references.bib
 ## Uncertainty in the spatial extent of suburbia
 
 ::: column-screen
-![A full screen image](Images/IMG_1722.jpeg)
+![](Images/IMG_1722.jpeg)
 :::
 
 The suburb exists as a critical site of demographic research but there lacks common consensus on how this space is defined. Huge divergence in form, function, and structure within suburban settings poses challenges in how to meaningfully define what is suburban. This environment is constantly evolving and changing; new suburbs emerge as cities expand outward, while changes to extant suburbs call in to question whether a given location is still suburban. Demographically, suburban populations are becoming more non-white while poverty is consistently increasing across the urban periphery so our understanding of what it means to be suburban is constantly in flux. 

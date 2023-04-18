@@ -1,6 +1,8 @@
 ---
 title: "Portland"
 editor: visual
+execute:
+  echo: false
 ---
 
 ::: column-margin
@@ -10,3 +12,670 @@ editor: visual
 
 </div>
 :::
+
+The final location of study includes Portland, OR. Located on the boundary between Oregon and Washington, Portland's suburbs transcend the boundaries of two states Also, the city operates with a distinctive urban growth boundary which seeks to regulate sprawl and development associated with suburban expansion.
+
+```{r setup, echo=FALSE, warning=FALSE,message=FALSE}
+
+#Libraries
+library(tidyverse)
+library(tidycensus)
+library(tigris)
+library(sf)
+library(patchwork)
+library(scales)
+
+options(tigris_use_cache = TRUE)
+
+#To hold the Figures positions within the text
+knitr::opts_chunk$set(fig.pos = 'H')
+options(dplyr.show_progress = FALSE)
+
+```
+
+## Portland and its suburbs
+
+### Census-Designated Suburbs
+
+```{r, echo=FALSE, include=FALSE, warning=FALSE, message=FALSE}
+options(dplyr.show_progress = FALSE)
+
+ST = c("OR", "WA")
+GEOG = "tract"
+YR = 2011
+YR2 = 2021
+
+CBSA = c("Portland-Vancouver")
+CENTRAL_CITY = c("Portland city")
+
+
+#2011
+#Download geographies of interest (in this case, the CBSA)
+CBSA_2011 <- core_based_statistical_areas(resolution = "500k", year = 2011) %>%
+  filter(str_detect(NAME, CBSA))
+
+#Download tracts of interest
+Tracts_2011 <- map_dfr(c(ST), ~{
+  tracts(.x, year = YR)})
+
+#Acquiring the central city geographies
+CentralCities_2011 <- places(state = ST, year = YR) %>%
+  filter(str_detect(NAMELSAD, CENTRAL_CITY)) 
+
+#Spatial filter of tracts for the city of interest
+#Here we include all tracts that border the CMSA boundary, as we're are interested in the periphery
+Tracts_2011 <- Tracts_2011[CBSA_2011, ]
+
+#Removing the CDP tracts from Portland
+Tracts_2011 <-  Tracts_2011[lengths(st_intersects(Tracts_2011,CentralCities_2011))==0,]
+
+#Erase water
+nonCDP_Suburbs_2011 <- erase_water(Tracts_2011)
+
+#General tidying
+nonCDP_Suburbs_2011  <- nonCDP_Suburbs_2011 %>%
+  mutate(State_Name = "NC",
+         City = "Portland") %>%
+  relocate(State_Name, .before = STATEFP) %>%
+  relocate(City, .before = COUNTYFP)
+
+#For initial visualizing of Portland
+Portland2011 <- ggplot() + 
+  geom_sf(data = nonCDP_Suburbs_2011, fill = "black", color = "grey") + 
+  geom_sf(data = CentralCities_2011, fill = NA, color = "blue") + 
+  geom_sf(data = CBSA_2011, fill = NA, color = "red") + 
+  theme_void()
+
+
+  
+#2021
+
+#Download geographies of interest (in this case, the CBSA)
+CBSA_2021 <- core_based_statistical_areas(resolution = "500k", year = 2021) %>%
+  filter(str_detect(NAME, CBSA))
+
+#Download tracts of interest
+Tracts_2021 <- map_dfr(c(ST), ~{
+  tracts(.x, year = YR2)})
+
+#Acquiring the central city geographies
+CentralCities_2021 <- places(state = ST, year = YR2) %>%
+  filter(str_detect(NAMELSAD, CENTRAL_CITY)) 
+
+#Spatial filter of tracts for the city of interest
+#Here we include all tracts that border the CMSA boundary, as we're are interested in the periphery
+Tracts_2021 <- Tracts_2021[CBSA_2021, ]
+
+#Removing the CDP tracts from Portland
+Tracts_2021 <-  Tracts_2021[lengths(st_intersects(Tracts_2021,CentralCities_2021))==0,]
+
+#Erase water
+nonCDP_Suburbs_2021 <- erase_water(Tracts_2021)
+
+#General tidying
+nonCDP_Suburbs_2021  <- nonCDP_Suburbs_2021 %>%
+  mutate(State_Name = "NC",
+         City = "Portland") %>%
+  relocate(State_Name, .before = STATEFP) %>%
+  relocate(City, .before = COUNTYFP)
+
+#For a more detailed visualization of the new data (with a legend)
+Portland2021 <- ggplot() + 
+  geom_sf(data = nonCDP_Suburbs_2021, aes(fill = "black", color = "grey"), show.legend = "line") + 
+  geom_sf(data = CentralCities_2021, aes(color = "blue"), fill = NA,  show.legend = "line")  + 
+  geom_sf(data = CBSA_2021, aes(color = "dark red"), fill = NA,  show.legend = "line") + 
+  theme_void() +
+  scale_color_manual(values=c("blue", "red", "light grey"), 
+                     labels=c("Census Designated Place", "Combined Statistical Area", "Census Tract")) +
+  scale_fill_manual(values = c("black"), 
+                    labels=c("Census Designated Place"),
+                    guide = "none") +
+  theme(legend.title=element_blank(),
+        legend.position=c("bottom")) + 
+  guides(color = guide_legend(title.position = "top", 
+                              title.hjust = 0.5,
+                              label.position = "bottom",
+                              override.aes = list(size=1)))
+
+```
+
+```{r, fig.cap = "Figure 1. Portland's census inspired suburbs in 2011 and 2021"}
+Portland2011 + Portland2021 + plot_layout(widths = c(6, 6), guides = "collect") & theme(legend.position = "bottom")
+
+```
+
+### Distance-Defined Suburbs
+
+```{r, echo=FALSE, include=FALSE, warning=FALSE, message=FALSE}
+
+#2011
+#Download geographies of interest (in this case, the CBSA)
+CBSA_2011 <- core_based_statistical_areas(resolution = "500k", year = 2011) %>%
+  filter(str_detect(NAME, CBSA))
+
+#Download tracts of interest
+Tracts_2011 <- map_dfr(c(ST), ~{
+  tracts(.x, year = YR)})
+
+#Acquiring the central city geographies
+CentralCities_2011 <- places(state = ST, year = YR) %>%
+  filter(str_detect(NAMELSAD, CENTRAL_CITY)) 
+
+#Spatial filter of tracts for the city of interest
+#Filtering the census tracts for our geographies of interest
+Tracts_2011 <- Tracts_2011[CBSA_2011, ]
+
+#Removing the CDP tracts
+#This removes the inner/urban area
+Tracts_2011 <-  Tracts_2011[lengths(st_within(Tracts_2011,CentralCities_2011))==0,]
+
+#To isolate the Inner suburban tracts (tracts that are contiguous with the central city)
+Inner_Suburbs <- Tracts_2011[CentralCities_2011, ]%>%
+  mutate(Suburb = "Inner")
+
+#Isolating the Outer suburban tracts
+#Remove the inner tracts, then the central city tracts
+Outer_Suburbs <-  Tracts_2011[lengths(st_within(Tracts_2011,Inner_Suburbs))==0,] %>%
+  mutate(Suburb = "Outer")
+
+#Joining Inner/Outer suburbs
+InnerOuter_Suburbs <- rbind(Inner_Suburbs, Outer_Suburbs)
+
+#Erase water bodies, rivers, lakes
+InnerOuter_Suburbs_2011 <- erase_water(InnerOuter_Suburbs)
+
+
+#To visualize Portland
+Portland2011IO <- ggplot() + 
+  geom_sf(data = InnerOuter_Suburbs_2011, aes(fill = Suburb),
+          linewidth = 0.1, color = "white") + 
+  geom_sf(data = InnerOuter_Suburbs_2011, aes(fill = Suburb),
+          linewidth = 0.1, color = "white") + 
+  theme_void() +
+  scale_fill_manual(values=c("#1A1A1A", "#BFBFBF"), 
+                    labels=c("Inner\nSuburbs", "Outer\nSuburbs"),
+                    na.translate = F) +
+  theme(legend.title=element_blank(),
+        legend.position=c("bottom"),
+        legend.key = element_rect(colour = NA, fill = NA))  + 
+  guides(fill = guide_legend(title.position = "top", 
+                              title.hjust = 0.5,
+                              label.position = "bottom",
+                              override.aes = list(size=1)))
+
+CBSA_2021 <- core_based_statistical_areas(resolution = "500k", year = 2021) %>%
+  filter(str_detect(NAME, CBSA))
+
+#Download tracts of interest
+Tracts_2021 <- map_dfr(c(ST), ~{
+  tracts(.x, year = YR2)})
+
+#Acquiring the central city geographies
+CentralCities_2021 <- places(state = ST, year = YR2) %>%
+  filter(str_detect(NAMELSAD, CENTRAL_CITY)) 
+
+#Spatial filter of tracts for the city of interest
+#Filtering the census tracts for our geographies of interest
+Tracts_2021 <- Tracts_2021[CBSA_2021, ]
+
+#Removing the CDP tracts
+#This removes the inner/urban area
+Tracts_2021 <-  Tracts_2021[lengths(st_within(Tracts_2021,CentralCities_2021))==0,]
+
+#To isolate the Inner suburban tracts (tracts that are contiguous with the central city)
+Inner_Suburbs <- Tracts_2021[CentralCities_2021, ]%>%
+  mutate(Suburb = "Inner")
+
+#Isolating the Outer suburban tracts
+#Remove the inner tracts, then the central city tracts
+Outer_Suburbs <-  Tracts_2021[lengths(st_within(Tracts_2021,Inner_Suburbs))==0,] %>%
+  mutate(Suburb = "Outer")
+
+#Joining Inner/Outer suburbs
+InnerOuter_Suburbs <- rbind(Inner_Suburbs, Outer_Suburbs)
+
+#Erase water bodies, rivers, lakes
+InnerOuter_Suburbs_2021 <- erase_water(InnerOuter_Suburbs)
+
+
+#To visualize Portland (OR and WA)
+Portland2021IO <- ggplot() + 
+  geom_sf(data = InnerOuter_Suburbs_2021, aes(fill = Suburb),
+          linewidth = 0.1, color = "white") + 
+  geom_sf(data = InnerOuter_Suburbs_2021, aes(fill = Suburb),
+          linewidth = 0.1, color = "white") + 
+  theme_void() +
+  scale_fill_manual(values=c("#1A1A1A", "#BFBFBF"), 
+                    labels=c("Inner\nSuburbs", "Outer\nSuburbs"),
+                    na.translate = F) +
+  theme(legend.title=element_blank(),
+        legend.position=c("bottom"),
+        legend.key = element_rect(colour = NA, fill = NA)) + 
+  guides(fill = guide_legend(title.position = "top", 
+                              title.hjust = 0.5,
+                              label.position = "bottom",
+                              override.aes = list(size=1)))
+
+```
+
+```{r fig.cap = "Figure 2. Portland's Inner and Outer suburbs in 2011 and 2021"}
+Portland2011IO + Portland2021IO + plot_layout(widths = c(6, 6), guides = "collect") & theme(legend.position = "bottom")
+```
+
+### Age-Based Suburbs
+
+```{r, echo=FALSE, include=FALSE, warning=FALSE, message=FALSE}
+
+HousingData_2011 <- get_acs(year = YR,
+                geography = GEOG,
+                state = ST,
+                table = "B25034",
+                summary_var = "B25034_001",
+                geometry = TRUE) %>%
+  mutate(Era = case_when(
+    variable == "B25034_001" ~ "Total",
+    variable >= "B25034_008" ~ "PreCR",
+    variable <= "B25034_007" ~ "PostCR")) %>%
+  mutate(variable = case_when(
+    variable == "B25034_001" ~ "Total",
+    variable == "B25034_002" ~ "2011orlater",
+    variable == "B25034_003" ~ "2010to2014",
+    variable == "B25034_004" ~ "2000to2009",
+    variable == "B25034_005" ~ "1990to1999",
+    variable == "B25034_006" ~ "1980to1989",
+    variable == "B25034_007" ~ "1970to1979",
+    variable == "B25034_008" ~ "1960to1969",
+    variable == "B25034_009" ~ "1950to1959",
+    variable == "B25034_010" ~ "1940to1949",
+    variable == "B25034_011" ~ "1939orbefore")) %>%
+  mutate(PercentofHousing = 100 * (estimate / summary_est)) %>%
+  group_by(GEOID, Era) %>%
+  mutate(CR_HousingStock=sum(PercentofHousing)) %>%
+  ungroup %>%
+  mutate(PostCRsuburb = case_when(
+    Era == "PostCR" & CR_HousingStock >= 75 ~ "Yes",
+    Era == "PostCR" & CR_HousingStock <= 75 ~ "No",
+    Era == "PreCR" ~ "No"))
+ 
+#Download geographies of interest (in this case, the CBSA)
+CBSA_2011 <- core_based_statistical_areas(resolution = "500k", year = 2011) %>%
+  filter(str_detect(NAME, CBSA))
+
+#Spatial filter of tracts for the city of interest
+HousingData_2011 <- HousingData_2011[CBSA_2011, ]
+
+#Acquiring the central city geographies
+CentralCities_2011 <- places(state = ST, year = YR) %>%
+  filter(str_detect(NAMELSAD, CENTRAL_CITY)) 
+
+#Removing the central city tracts from the Housing Data
+HousingData_2011 <-  HousingData_2011[lengths(st_intersects(HousingData_2011,CentralCities_2011))==0,]
+
+#Tidy the dataset
+HousingData_2011 <- HousingData_2011 %>%
+  separate(
+    NAME,
+    into = c("Tract", "County", "State"),
+    sep = ", "
+  ) %>%
+  rename(Age = variable) %>%
+  select(GEOID, County, State, PostCRsuburb, Era, estimate, moe, PercentofHousing, Age, CR_HousingStock, geometry) %>%
+  filter(!Age == "Total")
+
+#Erase water bodies, rivers, lakes
+HousingData_2011 <- erase_water(HousingData_2011)
+
+#Creating an object of post-CR tracts
+PostCR_suburbs_2011 <- HousingData_2011 %>%
+  select(GEOID, County, State, PostCRsuburb, geometry)
+
+
+#For genereal visualization of Portland, NC
+Portland2011PP <- ggplot() + 
+  geom_sf(data = PostCR_suburbs_2011, 
+          aes(fill = PostCRsuburb), linewidth = 0.1, color = "white") + 
+  theme_void() +
+  scale_fill_manual(values=c("#BFBFBF", "#1A1A1A"), 
+                    labels=c("Pre-Civil Rights", "Post-Civil Rights"),
+                    na.translate = F,
+                    guide = "none") +
+  theme(legend.title=element_blank(),
+        legend.position=c("bottom")) + 
+  guides(color = guide_legend(title.position = "top", 
+                              title.hjust = 0.5,
+                              label.position = "bottom",
+                              override.aes = list(size=1)))
+
+
+#Filter Pre- and Post-CR housing
+#Rename raw variables with codebook labels
+HousingData_2021 <- get_acs(year = YR2,
+                              geography = GEOG,
+                              state = ST,
+                              table = "B25034",
+                              summary_var = "B25034_001",
+                              geometry = TRUE) %>%
+  mutate(Era = case_when(
+    variable == "B25034_001" ~ "Total",
+    variable >= "B25034_008" ~ "PreCR",
+    variable <= "B25034_007" ~ "PostCR")) %>%
+  mutate(variable = case_when(
+    variable == "B25034_001" ~ "Total",
+    variable == "B25034_002" ~ "2021orlater",
+    variable == "B25034_003" ~ "2010to2014",
+    variable == "B25034_004" ~ "2000to2009",
+    variable == "B25034_005" ~ "1990to1999",
+    variable == "B25034_006" ~ "1980to1989",
+    variable == "B25034_007" ~ "1970to1979",
+    variable == "B25034_008" ~ "1960to1969",
+    variable == "B25034_009" ~ "1950to1959",
+    variable == "B25034_010" ~ "1940to1949",
+    variable == "B25034_011" ~ "1939orbefore")) %>%
+  mutate(PercentofHousing = 100 * (estimate / summary_est)) %>%
+  group_by(GEOID, Era) %>%
+  mutate(CR_HousingStock=sum(PercentofHousing)) %>%
+  ungroup %>%
+  mutate(PostCRsuburb = case_when(
+    Era == "PostCR" & CR_HousingStock >= 75 ~ "Yes",
+    Era == "PostCR" & CR_HousingStock <= 75 ~ "No",
+    Era == "PreCR" ~ "No"))
+
+#Download geographies of interest (in this case, the CBSA)
+CBSA_2021 <- core_based_statistical_areas(resolution = "500k", year = 2021) %>%
+  filter(str_detect(NAME, CBSA))
+
+#Spatial filter of tracts for the city of interest
+HousingData_2021 <- HousingData_2021[CBSA_2021, ]
+
+#Acquiring the central city geographies
+CentralCities_2021 <- places(state = ST, year = YR2) %>%
+  filter(str_detect(NAMELSAD, CENTRAL_CITY)) 
+
+#Removing the central city tracts from the Housing Data
+HousingData_2021 <-  HousingData_2021[lengths(st_intersects(HousingData_2021,CentralCities_2021))==0,]
+
+#Tidy the dataset
+HousingData_2021 <- HousingData_2021 %>%
+  separate(
+    NAME,
+    into = c("Tract", "County", "State"),
+    sep = ", "
+  ) %>%
+  rename(Age = variable) %>%
+  select(GEOID, County, State, PostCRsuburb, Era, estimate, moe, PercentofHousing, Age, CR_HousingStock, geometry) %>%
+  filter(!Age == "Total")
+
+#Erase water bodies, rivers, lakes
+HousingData_2021 <- erase_water(HousingData_2021)
+
+#Creating an object of post-CR tracts
+PostCR_suburbs_2021 <- HousingData_2021 %>%
+  select(GEOID, County, State, PostCRsuburb, geometry)
+
+#For general visualization of Portland, NC
+Portland2021PP <- ggplot() + 
+  geom_sf(data = PostCR_suburbs_2021, 
+          aes(fill = PostCRsuburb), linewidth = 0.1, color = "white") + 
+  theme_void() +
+  scale_fill_manual(values=c("#BFBFBF", "#1A1A1A"), 
+                     labels=c("Pre-Civil Rights\nSuburbs", "Post-Civil Rights\nSuburbs"),
+                    na.translate = F) +
+  theme(legend.title=element_blank(),
+        legend.position=c("bottom"),
+        legend.key = element_rect(colour = NA, fill = NA)) + 
+  guides(fill = guide_legend(title.position = "top", 
+                              title.hjust = 0.5,
+                              label.position = "bottom",
+                              override.aes = list(size=1)))
+```
+
+```{r fig.cap = "Figure 3. Portland's Pre- and Post-Civil Rights suburbs in 2011 and 2021"}
+Portland2011PP + Portland2021PP + plot_layout(widths = c(6, 6), guides = "collect") & theme(legend.position = "bottom")
+```
+
+## Changes in Population 
+
+### Total Population
+
+The aggregated total population of each suburban form is shown below. Figure 4 illustrates the population total in 2011 with the total in 2021 included above. Interestingly, Portland's population steadily increased over the 10 years, showing growth in Pre-Civil Rights Suburbs and in Outer Suburbs, while decreasing in Post-Civil Rights Suburbs and in Inner Suburbs.
+
+```{r, warning=FALSE, message=FALSE, echo = FALSE, fig.cap = "Figure 4. Total Population of each suburban space"}
+load("/Users/billy/Documents/GitHub/Suburban-definitions/Output Data/TotalPopulation.Rdata")
+
+#Prepping the data
+Pop_Totals <- Total_Population %>%
+  pivot_longer(
+    cols = c(Type, PostCRSuburb, Suburb),
+    values_to = "Type"
+  ) %>%
+  select(!name) %>%
+  drop_na(Type) %>%
+  group_by(City, Type) %>%
+  summarise(Total_2011 = sum(Total_2011, na.rm = T),
+            Total_2021 = sum(Total_2021, na.rm = T)) %>%
+  mutate(PercentChange = (Total_2021/Total_2011)-1) %>%
+  pivot_longer(
+    cols = c(Total_2011, Total_2021),
+    values_to = "Estimate"
+  ) %>%
+  rename(Year = "name") %>%
+  mutate(Year = str_sub(Year, 7, -1)) %>%
+  mutate(Suburb = case_when(Type == "Yes" ~ "Post-Civil Rights",
+                            Type == "No" ~ "Pre-Civil Rights",
+                            Type == "Inner" ~ "Inner",
+                            Type == "Outer" ~ "Outer",
+                            Type == "NCDP" ~ "Non-CDP")) %>%
+  mutate(Definition = case_when(Type == "Yes" ~ "Age",
+                                Type == "No" ~ "Age",
+                                Type == "Inner" ~ "Distance",
+                                Type == "Outer" ~ "Distance",
+                                Type == "NCDP" ~ "Census Designated")) %>%
+  mutate(PercentChange=ifelse(row_number()%%2==1,NA,PercentChange))
+
+
+ggplot(Pop_Totals[Pop_Totals$City == "Portland", ], 
+       aes(y = Suburb, x = Estimate, alpha = Year, fill = Definition)) + 
+  geom_col(width = 0.7, position = "dodge", show.legend=FALSE) +
+  geom_text(aes(x = Estimate, y = Suburb, label = scales::percent(PercentChange)), 
+            hjust = 0, size = 4, color = "black", fontface = "bold", alpha = 1,
+            inherit.aes = TRUE, na.rm = T) +
+  theme_minimal(base_size = 12.5) + 
+  theme(legend.key.size = unit(1, "cm"),
+        legend.position = "top",
+        strip.text = element_text(
+          size = 10, color = "black", face = "bold"),
+        strip.placement = "outside",
+        plot.title = element_text(hjust = 0.5, size = 22),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank()) +
+  labs(title = "Portland") +
+  scale_x_continuous(labels = scales::comma,
+                     expand = c(0, 150000)) +
+  scale_fill_brewer(palette = "Dark2") +
+  scale_alpha_discrete(range = c(0.45, 1), 
+                       guide = "none") +
+  guides(fill = guide_legend(byrow = F,
+                             label.position = "top")) +
+  facet_grid(rows = vars(Definition), scales = "free", switch = "y") 
+```
+
+### Changes across race/ethnicity
+
+Table 1 demonstrates the population change for each ethnoracial group. The percentage change of the total population is described for each definition. Across suburban Portland, the only group to decrease in population was the non-Hispanic White population, while all other groups increased in size. The largest increases were seen in the Hispanic and Asian categorized groups.
+
+|       Suburban        | Type      | NH-White | NH-Black | Hispanic | Asian | Small Group |
+|:---------------------:|-----------|----------|----------|----------|-------|-------------|
+|        **Age**        | *Pre-CR*  | 12.94    | 36.71    | 53.60    | 61.73 | 25.55       |
+|                       | *Post-CR* | -3.45    | 26.54    | 12.44    | 27.55 | 17.24       |
+| **Census Designated** | *Non-CDP* | 4.91     | 31.51    | 32.24    | 41.51 | 21.91       |
+|     **Distance**      | *Inner*   | -10.67   | 7.22     | 34.48    | 15.19 | 15.74       |
+|                       | *Outer*   | 5.00     | 31.39    | 32.22    | 41.46 | 21.91       |
+
+: Table 1. Overall population change by race/ethincity (%).
+
+### Native and Foreign Born
+
+The proportion of native and foriegn born populations across each suburban setting for 2011 and 2021 is illustrated below. Data for 2011 are positioned above 2021 in each chart to illustrate the change. The foreign-born population increases across all definitions of Portland.
+
+```{r, warning=FALSE, message=FALSE, echo = FALSE, fig.cap = "Figure 5. Native and Foreign Born"}
+
+load("/Users/billy/Documents/GitHub/Suburban-definitions/Output Data/Born.Rdata")
+
+Born_Totals <- Born %>%
+  pivot_longer(
+    cols = c(Type, PostCRSuburb, Suburb),
+    values_to = "Type"
+  ) %>%
+  drop_na(Type) %>%
+  group_by(City, Type) %>% 
+  summarize_if(is.numeric,sum,na.rm = TRUE) %>%
+  pivot_longer(
+    cols = ends_with("1"), 
+    names_to = "Form", 
+    values_to = "Estimate",
+    values_drop_na = TRUE) %>%
+  separate(Form, into = c("Form", "Year"), remove = FALSE, extra = "merge") %>%
+  mutate(Year = case_when(Year == 11 ~ 2011,
+                          Year == 21 ~ 2021)) %>%
+  mutate(Definition = case_when(Type == "Yes" ~ "Age",
+                                Type == "No" ~ "Age",
+                                Type == "Inner" ~ "Distance",
+                                Type == "Outer" ~ "Distance",
+                                Type == "NCDP" ~ "Census Designated")) %>%
+  mutate(Name = case_when(Type == "Yes" ~ "Post CR",
+                                Type == "No" ~ "Pre CR",
+                                Type == "Inner" ~ "Inner",
+                                Type == "Outer" ~ "Outer",
+                                Type == "NCDP" ~ "Non-CDP")) %>%
+  mutate(Order = case_when(Type == "Yes" ~ "4",
+                          Type == "No" ~ "1",
+                          Type == "Inner" ~ "2",
+                          Type == "Outer" ~ "5",
+                          Type == "NCDP" ~ "3")) 
+
+
+SuburbList <- c(
+  '1'="Age\nPre-Civil Rights",
+  '2'="Distance\nInner",
+  '3'="Census Designated\nNon-CDP",
+  '4'="Post-Civil Rights",
+  '5'="Outer")
+
+ggplot(Born_Totals[Born_Totals$City == "Portland", ], aes(x = reorder(Year, -Estimate), y = Estimate, fill = Definition, alpha = Form)) + 
+  geom_bar(position="fill", stat="identity", width=0.99, ) +
+  theme_minimal(base_size = 12.5) + 
+  facet_wrap( ~ Order, 
+             ncol = 3,
+             labeller = as_labeller(SuburbList)) +
+  coord_flip() +
+  labs(title = "Portland", 
+       x = "", 
+       y = "") +
+  scale_y_continuous(labels = percent,
+                     breaks=seq(0, 1, 0.2)) +
+  guides(fill=guide_legend(title=NULL)) +
+  theme(plot.title = element_text(hjust = 0.5, size=22),
+        legend.position="bottom",
+        strip.placement = "outside",
+        strip.text.x = element_text(size = 14, face = "bold"),
+        axis.text.x = element_text(size = 8),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        panel.grid.major.x = element_line(size = 0.5,
+                                          color = "grey"),
+        panel.grid.minor.x = element_line(size = 0.2,
+                                          color = "lightgrey"),
+        panel.grid.major.y = element_line(size = 0),
+        panel.grid.minor.y = element_line(size = 0)) +
+  scale_fill_manual(values=c('Distance'='#8da0cb', 
+                             'Census Designated'='#fc8d62', 
+                             "Age" = "#66c2a5"),
+                    guide = 'none') +
+  scale_alpha_manual(name = "",
+                     values = c(1, 0.55),
+                     guide = guide_legend(override.aes = list(fill = "#8da0cb", "#8da0cb",
+                                                              label.position = "top"),
+                                          label.position = "bottom",
+                                          reverse = TRUE)) +
+  guides(fill = "none") 
+
+```
+
+## Median Household Income
+
+The final projection describes how the household income at tract level has changed throughout the ten-year period. Figure 6 shows the tract with the lowest and highest median household income in Portland, and also the median value too. Inner Suburbs and Pre-Civil Rights suburbs were the only settings not to increase their lowest median household income tract while all others increased.
+
+```{r, warning=FALSE, message=FALSE, echo = FALSE, fig.cap = "Figure 6. Min, median, and max tract household income change"}
+
+
+load("/Users/billy/Documents/GitHub/Suburban-definitions/Output Data/MedianIncome.Rdata")
+
+City_Income <- Median_Income %>%
+  pivot_longer(
+    cols = c(Type, PostCRSuburb, Suburb),
+    values_to = "Type") %>% 
+  drop_na("Type") %>%
+  group_by(City, Type) %>% 
+  summarise(Max_11=max(Income_11, na.rm = TRUE), Min_11=min(Income_11, na.rm = TRUE), 
+            Median_11=median(Income_11, na.rm = TRUE),
+            Max_21=max(Income_21, na.rm = TRUE), Min_21=min(Income_21, na.rm = TRUE), 
+            Median_21=median(Income_21, na.rm = TRUE)) %>% 
+  pivot_longer(
+    cols = starts_with("M"), 
+    names_to = "Form", 
+    values_to = "Estimate",
+    values_drop_na = TRUE) %>%
+  separate(Form, into = c("Form", "Year"), remove = FALSE, extra = "merge") %>%
+  unite("Unique", Type:Form, remove = FALSE) %>%
+  mutate(Year = case_when(Year == 11 ~ 2011,
+                          Year == 21 ~ 2021)) %>%
+  mutate(Definition = case_when(Type == "Yes" ~ "Age",
+                                Type == "No" ~ "Age",
+                                Type == "Inner" ~ "Distance",
+                                Type == "Outer" ~ "Distance",
+                                Type == "NCDP" ~ "Census Designated")) %>%
+  mutate(Order = case_when(Type == "Yes" ~ "5",
+                           Type == "No" ~ "1",
+                           Type == "Inner" ~ "4",
+                           Type == "Outer" ~ "2",
+                           Type == "NCDP" ~ "3")) 
+
+
+ggplot(data=City_Income[City_Income$City == "Portland", ], aes(x = Year, y = Estimate, group = Unique, color = Definition, alpha = Form)) +
+  geom_path(aes(group = Unique, linetype = Order, color = Definition, size = Definition), 
+            arrow = arrow(ends = "last", length = unit(0.15, "inches")), 
+            show.legend = T) +
+  theme_minimal() +
+  scale_color_manual(values=c('Distance'='#8da0cb', 'Census Designated'='#fc8d62', "Age" = "#66c2a5"),
+                     guide = "none") +
+  scale_alpha_manual(name = "",
+                     values = c(0.4, 1, 0.4),
+                     guide = "none") +
+  scale_size_manual(values = c('Distance'= 1.15, 'Census Designated'= 1.15, "Age" = 1.15),
+                    guide = "none") +
+  scale_linetype_manual(values = c('1' = "longdash",'3' = "solid",'4' = "longdash", 
+                                  '5' = "solid", '2' = "solid"),
+                        labels = c("Inner", "Outer", "Non-CDP", "Pre-Civil Rights", "Post-Civil Rights"),
+                        name = "",
+                        guide = guide_legend(override.aes = list(color = c("#66c2a5", "#66c2a5",
+                                                                 "#fc8d62", "#8da0cb", "#8da0cb")),
+                                             label.position = "bottom")) +
+  scale_x_continuous(breaks=c(2011, 2021), limits = c(2010, 2022)) +
+  scale_y_continuous(labels=scales::dollar_format()) +
+  facet_grid(. ~ Definition, 
+             scales = "free_x") +
+  theme(strip.placement = "outside",
+        strip.text.x = element_text(size = 14, face = "bold"),
+        axis.text.x = element_text(size = 8),
+        plot.title = element_text(hjust = 0.5, size=22),
+        legend.position="bottom",
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        panel.grid.major.x = element_line(size = 0.65,
+                                          color = "grey"),
+        panel.grid.minor.x = element_line(size = 0.2),
+        panel.grid.major.y = element_line(size = 0.5),
+        panel.grid.minor.y = element_line(size = 0.2)) +
+  labs(title = "Portland") 
+
+```
