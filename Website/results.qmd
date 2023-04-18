@@ -1,9 +1,0 @@
----
-title: "Pittsburgh"
-format: html
-editor: visual
----
-
-::: column-margin
-![Pittsburgh, PA](Images/PittsburghAoS.png)
-:::

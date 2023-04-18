@@ -1,8 +1,0 @@
----
-title: "Charlotte"
-editor: visual
----
-
-::: column-margin
-![Charlotte, NC](Images/CharlotteAoS.png){alt="A full screen image"}
-:::
