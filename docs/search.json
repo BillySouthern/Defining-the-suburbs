@@ -60,7 +60,7 @@
     "href": "locations.html",
     "title": "Charlotte",
     "section": "",
-    "text": "Charlotte, NC\nThe first case study location includes Charlotte, NC. Charlotte was chosen as a sunbelt location which has demonstrated huge growth in its total population and spatial size, with this story illustrated throughout the figures below. The result below are broken down by suburban definition but first, the spatial boundedness of Charlotte and its change throughout the decade is mapped."
+    "text": "Charlotte, NC\nThe first case study location includes Charlotte, NC. Charlotte was chosen as a sunbelt location which has demonstrated huge growth in its total population and geographical size, with this story illustrated throughout the figures below. The results below are broken down by suburban definition but first, the spatial boundedness of Charlotte and its change throughout the decade is mapped."
   },
   {
     "objectID": "Portland.html",
@@ -109,14 +109,14 @@
     "href": "locations.html#changes-in-population",
     "title": "Charlotte",
     "section": "Changes in Population",
-    "text": "Changes in Population\n\nTotal Population\nThe total population is considered as an aggregate of each suburban space. Figure 4 below shows the population total in 2011 with the total in 2021 overlaid above.\n\n\n\n\n\nFigure 4. Total Population of each suburban space\n\n\n\n\n\n\nChanges across race/ethnicity\nTaking a closer look at race/ethnicity, the change in each group is shown in Table 1 below. This table demonstrates the percentage change in the total population of the four major groups with others categorized as small group.\n\nTable 1. Overall population change by race/ethincity (%).\n\n\n\n\n\n\n\n\n\n\n\nSuburban\nType\nNH-White\nNH-Black\nHispanic\nAsian\nSmall Group\n\n\n\n\nAge\nPre-CR\n64.45\n87.96\n105.45\n171.47\n19.60\n\n\n\nPost-CR\n52.07\n38.82\n104.81\n153.58\n30.92\n\n\nCensus Designated\nNon-CDP\n57.77\n70.20\n104.45\n158.55\n30.92\n\n\nDistance\nInner\n-10.05\n42.49\n40.70\n60.89\n-36.11\n\n\n\nOuter\n57.09\n69.75\n102.23\n153.58\n30.92\n\n\n\n\n\nNative and Foreign Born\nBelow includes the proportion of native and foriegn born populations across each suburban setting in Charlotte. Data for 2011 are situated above 2021 in each chart for easier comparison. Notably, the foreign-born population increases across all definitions, but most strongly in the inner suburbs.\n\n\n\n\n\nFigure 5. Native and Foreign Born"
+    "text": "Changes in Population\n\nTotal Population\nThe total population is considered as an aggregate of each suburban space. Figure 4 shows the population total in 2011 with the total in 2021 displayed above.\n\n\n\n\n\nFigure 4. Total Population of each suburban space\n\n\n\n\n\n\nChanges across race/ethnicity\nTaking a closer look at race/ethnicity, the change in each group is shown in Table 1 below. This table demonstrates the percentage change in the total population of the four major groups with others categorized as small group.\n\nTable 1. Overall population change by race/ethincity (%).\n\n\n\n\n\n\n\n\n\n\n\nSuburban\nType\nNH-White\nNH-Black\nHispanic\nAsian\nSmall Group\n\n\n\n\nAge\nPre-CR\n64.45\n87.96\n105.45\n171.47\n19.60\n\n\n\nPost-CR\n52.07\n38.82\n104.81\n153.58\n30.92\n\n\nCensus Designated\nNon-CDP\n57.77\n70.20\n104.45\n158.55\n30.92\n\n\nDistance\nInner\n-10.05\n42.49\n40.70\n60.89\n-36.11\n\n\n\nOuter\n57.09\n69.75\n102.23\n153.58\n30.92\n\n\n\n\n\nNative and Foreign Born\nBelow includes the proportion of native and foriegn born populations across each suburban setting in Charlotte. Data for 2011 are situated above 2021 in each chart for easier comparison. Notably, the foreign-born population increases across all definitions, but most strongly in the inner suburbs.\n\n\n\n\n\nFigure 5. Native and Foreign Born"
   },
   {
     "objectID": "locations.html#median-household-income",
     "href": "locations.html#median-household-income",
     "title": "Charlotte",
     "section": "Median Household Income",
-    "text": "Median Household Income\nFigure 6 below illustrates how the household income at tract level has changed throughout the ten-year period. The line chart shows the tract with the lower and highest median household income in Charlotte, and also the median value too.\n\n\n\n\n\nFigure 6. Min, median, and max tract household income change"
+    "text": "Median Household Income\nFigure 6 below illustrates how the household income at tract level has changed throughout the ten-year period. The line chart shows the tract with the lowest and highest median household income in Charlotte, and also the median value too.\n\n\n\n\n\nFigure 6. Min, median, and max tract household income change"
   },
   {
     "objectID": "Portland.html#portland-and-its-suburbs",
