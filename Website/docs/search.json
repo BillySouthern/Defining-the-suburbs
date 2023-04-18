@@ -1,0 +1,79 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Suburban delineations: Alternative ways to think about the suburban form",
+    "section": "",
+    "text": "The suburb exists as a critical landscape in social science research but there remains little consensus in how this space is defined. This website introduces several ways of defining the suburban, with an analysis of how these spaces have changed in their spatial extent and demographic composition in recent years."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "description.html",
+    "href": "description.html",
+    "title": "SuburbanDelineations",
+    "section": "",
+    "text": "Suburban-definitions\nThis repository contains alternative ways to delineate the suburban landscape.\nWhile the suburb exists without a specific and uniform definition, it is possible to illustrate this environment in alternative forms. Detailed here are several ways to define the suburban envrionment, and the code can be edited to adopt those defintiions to alternative locations ready for quantitative analysis.\nThree types of suburb are included with all focusing on a specific angle of the suburb: Firstly, the ‘non-census designated place’ suburb is based on Hall and Lee’s (2010) paper which looks at diversity across the suburbs. This methods situates the consolidated metropolitan statistical areas before removing the census designated place and assigned a suburban classification to remaining tracts. The code details the example of Pittsburgh, PA.\nMore to follow.\nReferences\nHall, M., & Lee, B. (2010). How Diverse Are US Suburbs? Urban Studies, 47(1), 3–28. https://doi.org/10.1177/0042098009346862\nWalker, K. (2022). Analyzing US Census Data: Methods, Maps, and Models in R (1st ed.). CRC Press."
+  },
+  {
+    "objectID": "LitReview.html",
+    "href": "LitReview.html",
+    "title": "LitReview",
+    "section": "",
+    "text": "Testing the new file"
+  },
+  {
+    "objectID": "literature.html",
+    "href": "literature.html",
+    "title": "Suburban Diversity",
+    "section": "",
+    "text": "A full screen image\n\n\n\nThe suburb exists as a critical site of demographic research but there lacks common consensus on how this space is defined. Huge divergence in form, function, and structure within suburban settings poses challenges in how to meaningfully define what is suburban. This environment is constantly evolving and changing; new suburbs emerge as cities expand outward, while changes to extant suburbs call in to question whether a given location is still suburban. Demographically, suburban populations are becoming more non-white while poverty is consistently increasing across the urban periphery so our understanding of what it means to be suburban is constantly in flux. \nSuburban landscapes exist with a huge divergence of structure and form in residential settlements, commercial activities, and industrial spaces. In Kenneth Jackson (1985) pioneering work, he characterizes the suburban landscape through four key principles: residential density, high homeownership, the location of the residential setting, and a distinctive journey to work time. However, not all peripheral and suburban growth operates with low density, and not all urban inner cities are denser than their suburban neighbors. Beyond this core literature, suburbs have been discussed in hugely different ways, including ethnoburbs (Li 2012), boomburbs (Lang and LeFurgy 2012), technoburbs (Fishman 1989), industrial and manufacturing suburbs (Keil 2013), and inner-ring and outer-ring suburbs (Hanlon 2008).\n\nJackson, Kenneth T. 1985. Crabgrass Frontier: The Suburbanization of the United States. 1st ed. Oxford University Press.\n\nLi, Wei. 2012. Ethnoburb: The New Ethnic Community in Urban America. 1st ed. Honolulu, Hawaii: University of Hawaii Press.\n\nLang, Robert E., and Jennifer LeFurgy. 2012. Boomburbs: The Rise of America’s Accidental Cities. 1st ed. Washington, D.C.: Brookings Institution Press.\n\nFishman, Robert. 1989. Bourgeois Utopias: The Rise and Fall of Suburbia. 1st ed. New York: Basic Books.\n\nKeil, Roger. 2013. Suburban Constellations. 1st ed. Jovis.\n\nHanlon, Bernadette. 2008. “The Decline of Older, Inner Suburbs in Metropolitan America.” Housing Policy Debate 19 (3): 423–56. https://doi.org/10.1080/10511482.2008.9521642.\nThe definition of ‘suburban’ is inconsistent across academic literature posing a challenge to comparative work in this area. This work begins to consider the differences how suburban space is defined by examining three prominent taxonomies in terms of their spatial extent, demographic comparison, and change in both domains over time. The research presented in this website was achieved through two stages of analysis. Firstly, through a review of academic suburban-related literature, several definitions of suburban were selected which forward an alternative spatial delineation of this landscape, with a brief review of this is presented on the methods page. After identifying several suburban typologies, the research develops an exploratory analysis to explore how the sociospatial characteristics of this landscape have changed between 2010 and 2020. The cities of Charlotte, NC, Pittsburgh, PA, and Portland, OR, form the case studies for this research, with each location existing with separate and distinct characteristics throughout the urban and suburban realm."
+  },
+  {
+    "objectID": "results.html",
+    "href": "results.html",
+    "title": "Pittsburgh",
+    "section": "",
+    "text": "Pittsburgh, PA"
+  },
+  {
+    "objectID": "methods.html",
+    "href": "methods.html",
+    "title": "Definitions and Data",
+    "section": "",
+    "text": "Accurately conceptualizing space is theoretically and empirically problematic (Fowler and Jensen 2020). Without a uniform definition of suburbia, quantitative research in the social sciences has relied on indirect census definitions, balancing bounded units of metropolitan and micropolitan statistical areas, and by examining metrics such as the distance from the nearby city center or population density (T. J. Cooke and Denton 2015).\n\nFowler, Christopher S, and Leif Jensen. 2020. “Bridging the Gap Between Geographic Concept and the Data We Have: The Case of Labor Markets in the USA.” Environment and Planning A: Economy and Space 52 (7): 1395–1414. https://doi.org/10.1177/0308518X20906154.\n\nCooke, Thomas J., and Curtis Denton. 2015. “The Suburbanization of Poverty? An Alternative Perspective.” Urban Geography 36 (2): 300–313. https://doi.org/10.1080/02723638.2014.973224.\nWith this in mind, this research focuses on mechanisms which are consistent across the suburban literature. Three definitions are included based on characteristics of age, distance, and administrative delineations and they are inspired by how others have focused the suburban in their research (see Figure 1).11 To note, all of these definitions include similarities and differences. While the reliance on the MSA and the CDP means that all definitions situate a similar spatial territory, each definition centers a different characteristic (age, distance, general categorization). It may be that all definitions both capture and overlook some suburban processes, but this work offers a useful starting point in the critical need to build more empirical rigor when studying the suburban.\n\n\n\nFigure 1. The suburban definitions.\n\n\nTo explain the definitions further, the Census-Designated Suburb disagregate the Metropolitan Statistical Area from the Census Designate Place and defines the remaining tracts as suburban (Hall and Lee 2010). This essentially involves removing the inner core from the city. The Distance-Defined Suburb further devolve the landscape into an inner suburban and outer suburban bounded space. This categorizes the tract intersecting with the Census Designated Place as a inner suburb, those tracts beyond this border as outer suburban, and it retains all tracts that intersect with the MSA rather than ending with the border (T. Cooke and Marchant 2006; Hanlon 2008). The Age-Based Suburb remove the Census Designate Place and then categorize the remaining tracts based on the age of housing development. Within this, Post-Civil Right Suburbs had 75% or more of their housing stock built after 1969, while Pre-Civil Right/Older Suburbs situate as the remaining tracts following these dissagragations as they are not the central city and they have less than 75% of their housing stock built following 1969 (Anacker 2015; Pfeiffer 2016).\n\nHall, Matthew, and Barrett Lee. 2010. “How Diverse Are US Suburbs?” Urban Studies 47 (1): 3–28. https://doi.org/10.1177/0042098009346862.\n\nCooke, Thomas, and Sarah Marchant. 2006. “The Changing Intrametropolitan Location of High-Poverty Neighbourhoods in the US, 1990-2000.” Urban Studies 43 (11): 1971–89. https://doi.org/10.1080/00420980600897818.\n\nHanlon, Bernadette. 2008. “The Decline of Older, Inner Suburbs in Metropolitan America.” Housing Policy Debate 19 (3): 423–56. https://doi.org/10.1080/10511482.2008.9521642.\n\nAnacker, Katrin B. 2015. “Analyzing Census Tract Foreclosure Risk Rates in Mature and Developing Suburbs in the United States.” Urban Geography 36 (8): 1221–40. https://doi.org/10.1080/02723638.2015.1055931.\n\nPfeiffer, Deirdre. 2016. “Racial Equity in the Post-Civil Rights Suburbs? Evidence from US Regions 20002012.” Urban Studies 53 (4): 799–817. https://doi.org/10.1177/0042098014563652."
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "Bibliography",
+    "section": "",
+    "text": "The bibliography and references page"
+  },
+  {
+    "objectID": "locations.html",
+    "href": "locations.html",
+    "title": "Charlotte",
+    "section": "",
+    "text": "Charlotte, NC"
+  },
+  {
+    "objectID": "Portland.html",
+    "href": "Portland.html",
+    "title": "Portland",
+    "section": "",
+    "text": "Portland, OR"
+  },
+  {
+    "objectID": "methods.html#data-and-approach",
+    "href": "methods.html#data-and-approach",
+    "title": "Definitions and Data",
+    "section": "Data and Approach",
+    "text": "Data and Approach\nTwo five-year American Community Survey datasets (2007-2011 and 2017-2021) are used to build an exploratory data analysis of how these suburban spaces have changed demographically (see Table 1). For further clarity, ACS data retrieval is achieved using the TidyCensus package (Walker 2022), along with census tract geometries, and all data wrangling and exploratory analysis is performed within RStudio. The exploratory data analysis maps how the spatial setting has changed, and how demographic and economic characteristics have shifted between 2011 and 2021 for the cities of Charlotte, Pittsburgh, and Portland.\n\nWalker, Kyle. 2022. Analyzing US Census Data: Methods, Maps, and Models in r. 1st ed. Boca Raton, Florida: CRC Press.\n\nTable 1. The datasets in focus.\n\n\n\n\n\n\n\nDataset\nCode\nDescription\n\n\n\n\nYear Structure Built\nB25034\nThe year of household construction aggregated to a decennial grouping. Used for the Pre/Post-Civil Right Suburb definition.\n\n\nTotal Population\nB01003\nIncludes the total population of each census tract.\n\n\nHispanic or Latino Origin by Race\nB03002\nIncludes the classification of major and minority groups, and those of two or more races broken down by Hispanic and non-Hispanic.\n\n\nNativity in the USA\nB05012\nDetails the total population, the native population, and foreign-born population.\n\n\nMedian Household Income\nB019019\nMedian household income by size."
+  }
+]
