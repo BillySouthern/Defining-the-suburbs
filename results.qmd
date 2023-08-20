@@ -431,7 +431,7 @@ Pittsburgh2021PP <- ggplot() +
 Pittsburgh2011PP + Pittsburgh2021PP + plot_layout(widths = c(6, 6), guides = "collect") & theme(legend.position = "bottom")
 ```
 
-## Changes in Population 
+## Changes in Population
 
 ### Total Population
 
@@ -502,7 +502,7 @@ ggplot(Pop_Totals[Pop_Totals$City == "Pittsburgh", ],
 Table 1 moves into the specific population change for each ethnoracial group. The percentage change in the total population of the major racial groups is included for each setting. Pittsburgh shows the largest decrease in the non-Hispanic White Population across many of its suburban settings, with the only other decreased seen in the non-Hispanic Black population in the Inner Suburbs. Hispanic, Asian, and Small Grouped individuals show large increases in there suburban residence.
 
 |       Suburban        | Type      | NH-White | NH-Black | Hispanic | Asian | Small Group |
-|:---------------------:|-----------|----------|----------|----------|-------|-------------|
+|:----------:|----------|----------|----------|----------|----------|----------|
 |        **Age**        | *Pre-CR*  | -5.30    | 5.75     | 42.72    | 45.46 | 27.84       |
 |                       | *Post-CR* | 14.17    | 75.86    | 124.24   | 66.07 | 362.86      |
 | **Census Designated** | *Non-CDP* | -3.60    | 7.73     | 50.33    | 49.03 | 40.89       |

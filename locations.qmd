@@ -6,7 +6,7 @@ execute:
 ---
 
 ::: column-margin
-![Charlotte, NC](Images/CharlotteAoS.png){alt="A full screen image"}
+![A full screen image](Images/CharlotteAoS.png)
 :::
 
 The first case study location includes Charlotte, NC. Charlotte was chosen as a sunbelt location which has demonstrated huge growth in its total population and geographical size, with this story illustrated throughout the figures below. The results below are broken down by suburban definition but first, the spatial boundedness of Charlotte and its change throughout the decade is mapped.
@@ -435,7 +435,7 @@ Charlotte2021PP <- ggplot() +
 Charlotte2011PP + Charlotte2021PP + plot_layout(widths = c(6, 6), guides = "collect") & theme(legend.position = "bottom")
 ```
 
-## Changes in Population 
+## Changes in Population
 
 ### Total Population
 
@@ -506,7 +506,7 @@ ggplot(Pop_Totals[Pop_Totals$City == "Charlotte", ],
 Taking a closer look at race/ethnicity, the change in each group is shown in Table 1 below. This table demonstrates the percentage change in the total population of the four major groups with others categorized as small group.
 
 |       Suburban        | Type      | NH-White | NH-Black | Hispanic | Asian  | Small Group |
-|:---------------------:|-----------|----------|----------|----------|--------|-------------|
+|:----------:|----------|----------|----------|----------|----------|----------|
 |        **Age**        | *Pre-CR*  | 64.45    | 87.96    | 105.45   | 171.47 | 19.60       |
 |                       | *Post-CR* | 52.07    | 38.82    | 104.81   | 153.58 | 30.92       |
 | **Census Designated** | *Non-CDP* | 57.77    | 70.20    | 104.45   | 158.55 | 30.92       |

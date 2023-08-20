@@ -433,7 +433,7 @@ Portland2021PP <- ggplot() +
 Portland2011PP + Portland2021PP + plot_layout(widths = c(6, 6), guides = "collect") & theme(legend.position = "bottom")
 ```
 
-## Changes in Population 
+## Changes in Population
 
 ### Total Population
 
@@ -504,7 +504,7 @@ ggplot(Pop_Totals[Pop_Totals$City == "Portland", ],
 Table 1 demonstrates the population change for each ethnoracial group. The percentage change of the total population is described for each definition. Across suburban Portland, the only group to decrease in population was the non-Hispanic White population, while all other groups increased in size. The largest increases were seen in the Hispanic and Asian categorized groups.
 
 |       Suburban        | Type      | NH-White | NH-Black | Hispanic | Asian | Small Group |
-|:---------------------:|-----------|----------|----------|----------|-------|-------------|
+|:----------:|----------|----------|----------|----------|----------|----------|
 |        **Age**        | *Pre-CR*  | 12.94    | 36.71    | 53.60    | 61.73 | 25.55       |
 |                       | *Post-CR* | -3.45    | 26.54    | 12.44    | 27.55 | 17.24       |
 | **Census Designated** | *Non-CDP* | 4.91     | 31.51    | 32.24    | 41.51 | 21.91       |
