@@ -8,7 +8,7 @@ references: Library.bib
 bibliography: references.bib
 ---
 
-## Uncertainty in the spatial extent of suburbia 
+## Uncertainty in the spatial extent of suburbia
 
 ::: column-screen
 ![](Images/IMG_1722.jpeg)
