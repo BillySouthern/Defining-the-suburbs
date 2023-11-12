@@ -11,7 +11,7 @@ about:
     href: https://github.com/BillySouthern/Defining-the-suburbs
   - text: About the author
     icon: person-circle
-    href: https://billysouthern.blogspot.com
+    href: https://billysouthern.github.io
   - text: Email the author
     icon: envelope
     href: mailto:bms6724@psu.edu 
